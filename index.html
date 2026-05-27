@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit IA/GEO — Barillet Distribution</title>
+<style>
+  :root {
+    --primary: #1a3a2a;
+    --accent: #2d6a4f;
+    --accent-light: #40916c;
+    --warning: #d62828;
+    --warning-bg: #fff0f0;
+    --ok: #2d6a4f;
+    --ok-bg: #f0faf4;
+    --amber: #e07b00;
+    --amber-bg: #fff8ee;
+    --bg: #f8f7f4;
+    --white: #ffffff;
+    --text: #1c1c1c;
+    --text-light: #5a5a5a;
+    --border: #e0ddd6;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .report-header {
+    background: var(--primary);
+    color: white;
+    padding: 48px 40px 36px;
+  }
+  .report-header .label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #74b89a;
+    margin-bottom: 10px;
+  }
+  .report-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .report-header .subtitle {
+    color: #9ecfb5;
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+  .meta-row {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-size: 13px;
+    color: #9ecfb5;
+  }
+  .meta-item strong {
+    color: white;
+    display: block;
+    font-size: 14px;
+  }
+
+  /* NAVIGATION */
+  .toc {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .toc a {
+    font-size: 12.5px;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #d4e8dd;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .toc a:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* MAIN */
+  .content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* SCORE SUMMARY */
+  .score-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .score-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .score-card .score-val {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .score-card .score-label {
+    font-size: 12px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .score-card .score-status {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .red { color: var(--warning); }
+  .green { color: var(--ok); }
+  .amber { color: var(--amber); }
+  .tag-red { background: var(--warning-bg); color: var(--warning); }
+  .tag-green { background: var(--ok-bg); color: var(--ok); }
+  .tag-amber { background: var(--amber-bg); color: var(--amber); }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding: 28px 32px 24px;
+    background: var(--primary);
+    border-radius: 14px 14px 0 0;
+    margin-top: 56px;
+  }
+  #synthese .section-header {
+    margin-top: 0;
+  }
+  .section-body {
+    background: var(--white);
+    border: 1px solid #d0cdc7;
+    border-top: none;
+    border-radius: 0 0 14px 14px;
+    padding: 32px 36px;
+    margin-bottom: 8px;
+  }
+  .phase-badge {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .section h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .section .section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: white !important;
+  }
+
+  /* FINDING BLOCKS */
+  .finding {
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    border-left: 4px solid transparent;
+  }
+  .finding.critical {
+    background: var(--warning-bg);
+    border-color: var(--warning);
+  }
+  .finding.ok {
+    background: var(--ok-bg);
+    border-color: var(--ok);
+  }
+  .finding.warning {
+    background: var(--amber-bg);
+    border-color: var(--amber);
+  }
+  .finding .finding-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .finding .finding-body {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.65;
+  }
+  .finding .action {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+  .finding.critical .action { background: #f5c6cb; color: #7b0000; }
+  .finding.warning .action { background: #fce5b6; color: #7b4000; }
+  .finding.ok .action { background: #c3e6cb; color: #0a4a20; }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    margin-bottom: 20px;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .data-table th {
+    background: var(--primary);
+    color: white;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: #f9f9f7; }
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pill-red { background: var(--warning-bg); color: var(--warning); }
+  .pill-green { background: var(--ok-bg); color: var(--ok); }
+  .pill-amber { background: var(--amber-bg); color: var(--amber); }
+  .pill-grey { background: #eee; color: #555; }
+
+  /* PROMPT PANEL */
+  .prompt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 640px) { .prompt-grid { grid-template-columns: 1fr; } }
+  .prompt-item {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+  }
+  .prompt-item .prompt-type {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: var(--text-light);
+  }
+  .prompt-item .prompt-text {
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .prompt-notoriete .prompt-type { color: #0077b6; }
+  .prompt-comparaison .prompt-type { color: #9b2226; }
+  .prompt-info .prompt-type { color: #606c38; }
+  .prompt-transac .prompt-type { color: #774936; }
+  .prompt-local .prompt-type { color: #5a189a; }
+
+  /* PRIORITY MATRIX */
+  .priority-list { list-style: none; }
+  .priority-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .priority-list li:last-child { border-bottom: none; }
+  .prio-num {
+    background: var(--accent);
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .prio-content strong { display: block; margin-bottom: 8px; font-size: 14.5px; }
+  .prio-action {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0A3856;
+    background: #e8f2fb;
+    border-left: 3px solid #0A3856;
+    padding: 8px 12px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 8px;
+    line-height: 1.55;
+  }
+  .prio-content span { font-size: 13px; color: var(--text-light); line-height: 1.65; display: block; }
+
+  /* EARNED MEDIA SOURCES */
+  .source-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .source-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+  }
+  .source-card .domain {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .source-card .source-type {
+    font-size: 11.5px;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .source-card .relevance {
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* KPI TABLE */
+  .kpi-section { margin-bottom: 8px; }
+  .kpi-section h4 {
+    font-size: 13px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: var(--primary);
+    color: white;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .callout h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #9ecfb5;
+  }
+  .callout p {
+    font-size: 14px;
+    color: #c5dfd1;
+    line-height: 1.65;
+  }
+
+  /* FOOTER */
+  .report-footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--text-light);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  h3.sub {
+    font-size: 16px;
+    color: var(--primary);
+    margin: 40px 0 14px;
+    padding-top: 28px;
+    border-top: 2px solid var(--border);
+  }
+  .section-body > h3.sub:first-child,
+  h3.sub:first-of-type {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  p.note { font-size: 13px; color: var(--text-light); margin-top: 8px; }
+
+  /* Listes dans finding-body */
+  .finding-body ol, .finding-body ul { padding-left: 20px; margin-top: 8px; }
+  .finding-body ol li, .finding-body ul li { margin-bottom: 10px; line-height: 1.65; }
+
+  /* Details/summary (prompts dépliants) */
+  details { border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; }
+  details summary {
+    padding: 12px 16px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--primary);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  details summary::before {
+    content: '▶';
+    font-size: 10px;
+    color: var(--accent);
+    transition: transform 0.15s;
+  }
+  details[open] summary::before { transform: rotate(90deg); }
+  details summary::-webkit-details-marker { display: none; }
+  details .details-inner { padding: 0 16px 16px; }
+
+  /* BOUTON EXPORT PDF */
+  .export-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 200;
+    transition: background 0.15s, transform 0.1s;
+    font-family: var(--font);
+  }
+  .export-btn:hover {
+    background: var(--accent);
+    transform: translateY(-1px);
+  }
+  .export-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* STYLES IMPRESSION */
+  @media print {
+    .export-btn, .toc { display: none !important; }
+    body { background: white; }
+    .content { max-width: 100%; padding: 0; }
+    .section-header { margin-top: 32px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-body { border: 1px solid #ccc !important; padding: 20px 24px; }
+    .finding { -webkit-print-color-adjust: exact; print-color-adjust: exact; break-inside: avoid; }
+    .score-grid { break-inside: avoid; }
+    .data-table { break-inside: auto; font-size: 12px; }
+    .data-table tr { break-inside: avoid; }
+    .prompt-grid { display: block; }
+    .prompt-item { break-inside: avoid; margin-bottom: 8px; display: inline-block; width: 48%; }
+    .source-grid { display: block; }
+    .source-card { display: inline-block; width: 30%; margin: 4px; }
+    .report-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    h3.sub { break-after: avoid; }
+    .kpi-section { break-inside: avoid; }
+    @page { margin: 15mm 12mm; size: A4; }
+  }
+
+
+  /* SECTIONS DÉPLIABLES */
+  .section-header {
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-header:hover {
+    opacity: 0.93;
+  }
+  .section-toggle {
+    margin-left: auto;
+    font-size: 18px;
+    color: rgba(255,255,255,0.75);
+    transition: transform 0.25s ease;
+    flex-shrink: 0;
+  }
+  .section.collapsed .section-toggle {
+    transform: rotate(-90deg);
+  }
+  .section.collapsed .section-body {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+
+<button class="export-btn" onclick="window.print()">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+    <polyline points="7 10 12 15 17 10"/>
+    <line x1="12" y1="15" x2="12" y2="3"/>
+  </svg>
+  Exporter en PDF
+</button>
+
+<div class="report-header">
+  <div class="label">Audit IA / GEO</div>
+  <h1>Barillet Distribution — Stratégie GEO</h1>
+  <div class="subtitle">Diagnostic de visibilité dans les moteurs de réponse (LLMs) et plan d'action</div>
+  <div class="meta-row">
+    <div class="meta-item"><strong>Client</strong>barillet-distribution.fr</div>
+    <div class="meta-item"><strong>Date</strong>Mai 2026</div>
+    <div class="meta-item"><strong>Concurrents analysés</strong>Vidal, Point P, Dispano, SM Bois, Gedibois</div>
+    <div class="meta-item"><strong>Périmètre</strong>5 phases — Diagnostic complet</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="toc">
+  <a href="#synthese">Synthèse &amp; Axes prioritaires</a>
+  <a href="#roadmap">Roadmap</a>
+  <a href="#phase1">Phase 1 — Diagnostic</a>
+  <a href="#phase2">Phase 2 — Technique</a>
+  <a href="#phase3">Phase 3 — Owned Media</a>
+  <a href="#phase4">Phase 4 — Earned Media</a>
+  <a href="#phase5">Phase 5 — Pilotage</a>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- SYNTHESE -->
+  <div class="section collapsed" id="synthese">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="phase-badge">Synthèse</div>
+      <h2>Tableau de bord GEO</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+
+    <!-- Réponse directe au brief client -->
+    <div style="background:#f9f5ff;border:2px solid #0A3856;border-radius:10px;padding:24px 28px;margin-bottom:32px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0A3856;margin-bottom:14px;">Réponse directe à votre brief</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#E9540D;margin-bottom:8px;">Axe 1 · Présence de la marque dans les LLMs</div>
+          <p style="font-size:14px;line-height:1.7;color:#1c1c1c;margin-bottom:8px;"><strong>Part de voix mesurée : 4,5%</strong> des réponses LLM sur 9 507 analyses (ChatGPT + Gemini, 30 prompts métier). Dispano, premier concurrent, atteint 24,3%.</p>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;">L'écart n'est pas uniquement un problème de notoriété. Barillet n'a pas de contenu ciblant les thématiques que les LLMs cherchent à citer. Le plan d'action (phases 2, 3 et 4) y répond directement.</p>
+        </div>
+        <div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2d6a4f;margin-bottom:8px;">Axe 2 · Localisation des agences</div>
+          <p style="font-size:14px;line-height:1.7;color:#1c1c1c;margin-bottom:8px;"><strong>Baseline en cours de construction.</strong> 10 prompts géographiques ajoutés au LLM Brand Tracker depuis le 23/05/2026. La collecte de données est active.</p>
+          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;">Les agences ont le socle technique (LocalBusiness schema valide, pages indexées). Ce qui manque : contenu éditorial, <code>areaServed</code>, GBP optimisé. Voir section 1.5 pour le protocole complet.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <div class="score-val amber">⚠</div>
+        <div class="score-label">Accessibilité bots LLM</div>
+        <div class="score-status tag-amber">À vérifier</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val red">4,5%</div>
+        <div class="score-label">Mentions LLM (vs 24,3% Dispano, 12,5% Point P)</div>
+        <div class="score-status tag-red">Très faible</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val amber">Partiel</div>
+        <div class="score-label">Données structurées</div>
+        <div class="score-status tag-amber">À compléter</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val red">Faible</div>
+        <div class="score-label">Contenu citeable par LLM</div>
+        <div class="score-status tag-red">Insuffisant</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val red">0</div>
+        <div class="score-label">Mentions earned media</div>
+        <div class="score-status tag-red">Absent</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val amber">En cours</div>
+        <div class="score-label">Visibilité locale LLM (agences)</div>
+        <div class="score-status tag-amber">10 prompts actifs depuis 23/05</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h3>Synthèse du diagnostic</h3>
+      <p>Barillet Distribution est <strong>cité dans 4,5% des réponses LLM</strong> sur l'ensemble du corpus analysé (9 507 réponses ChatGPT + Gemini, 30 prompts métier). Dispano domine avec 24,3% des réponses ; Point P arrive à 12,5%, Gedibois à 5,4%. Ce cumul agrège toutes les apparitions — Barillet et un concurrent peuvent être cités dans la même réponse. Les chiffres Dispano sont à lire avec un biais méthodologique (voir note 2, section 1.4).</p>
+      <p style="margin-top:10px;">La marque performe mieux sur les requêtes liées aux marques distribuées (Egger, Polyrey, Fundermax) et à l'approvisionnement régional. Elle est absente à 0% sur trois sujets : fibre-ciment façade, plan de travail sur mesure, et panneaux + bandes de chant.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 8px;">
+      <div style="background:#e8f2fb;border-left:4px solid #0A3856;padding:18px 20px;border-radius:6px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0A3856;margin-bottom:8px;">Axe 1</div>
+        <strong style="font-size:15px;color:#1c1c1c;">Présence de marque dans les LLMs</strong>
+        <p style="margin-top:8px;font-size:13px;color:#5a5a5a;">Part de voix Barillet sur les requêtes métier — produits, services, approvisionnement pro. Mesurée via le LLM Brand Tracker (30 prompts, ChatGPT + Gemini). Baseline : 4,5% de mentions. Cible M6 : 8%.</p>
+      </div>
+      <div style="background:#f0f8f4;border-left:4px solid #2d6a4f;padding:18px 20px;border-radius:6px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2d6a4f;margin-bottom:8px;">Axe 2</div>
+        <strong style="font-size:15px;color:#1c1c1c;">Localisation des agences</strong>
+        <p style="margin-top:8px;font-size:13px;color:#5a5a5a;">Présence de Barillet dans les réponses LLM à dimension géographique. Quand un professionnel demande "distributeur bois à [ville/région]", le réseau d'agences est-il mentionné ? Protocole et baseline à construire — voir section 1.5.</p>
+      </div>
+    </div>
+
+    <div class="section" id="recos" style="margin-top:0;border-top:none;">
+      <h3 class="sub" style="margin-top:0;">Recommandations prioritaires</h3>
+      <ul class="priority-list">
+        <li>
+          <div class="prio-num">1</div>
+          <div class="prio-content">
+            <strong>Vérifier et compléter la whitelist WAF Cloudflare pour les bots LLM</strong>
+            <div class="prio-action">→ Demander à l'équipe technique un audit des règles WAF Cloudflare. Confirmer que GPTBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot et Gemini-bot bypassent le JS challenge. Si absent, ajouter ces user-agents en règle d'exception — opération de configuration sans impact sur les visiteurs humains.</div>
+            <span>Googlebot et Bingbot sont déjà whitelistés (confirmé). Les bots LLM, plus récents, ne figurent probablement pas dans les règles d'origine. Sans cette action, toutes les autres optimisations GEO sont inopérantes — les LLMs ne peuvent pas lire le site.</span>
+          </div>
+        </li>
+        <li>
+          <div class="prio-num">2</div>
+          <div class="prio-content">
+            <strong>Créer du contenu sur les sujets à 0% de citations LLM</strong>
+            <div class="prio-action">→ Priorités immédiates (contenu à créer en M2-M3) : guide terrasse composite vs exotique · guide HPL façade et panneaux compacts · page service "commande pro / livraison chantier" · guide plan de travail sur mesure · guide contreplaqué marine. Voir section 3.4 pour le cahier des charges de chaque contenu.</div>
+            <span>Ces sujets ont été identifiés par croisement : 0% de mentions Barillet dans le Brand Tracker + volume de fan-out queries élevé. La liste est à réévaluer à chaque cycle mensuel du tracker selon les résultats réels.</span>
+          </div>
+        </li>
+        <li>
+          <div class="prio-num">3</div>
+          <div class="prio-content">
+            <strong>Suivre la baseline de visibilité locale — panel GEOlocal actif</strong>
+            <div class="prio-action">→ Les 10 prompts GEOlocal sont actifs dans le tracker depuis le 23/05/2026. Valider les prompts avec le client, puis analyser les premiers résultats dès qu'ils sont disponibles. En parallèle : enrichir les pages <code>/agence/</code> avec contenu éditorial + ajouter <code>areaServed</code> dans le schema LocalBusiness.</div>
+            <span>Voir section 1.5 pour le détail des prompts et l'état des signaux techniques existants sur les pages agences.</span>
+          </div>
+        </li>
+        <li>
+          <div class="prio-num">4</div>
+          <div class="prio-content">
+            <strong>Enrichir les textes SEO des pages catégories existantes</strong>
+            <div class="prio-action">→ Deux zones d'intervention : (1) intro de 2-3 phrases sous le H1 avec définition + usage clé + chiffre concret. (2) bloc éditorial de 200-400 mots en bas de page avec données chiffrées, cas d'usage pro et signal temporel "Mis à jour en 2026".</div>
+            <span>Ces zones sont compatibles avec les contraintes de template des pages catégories. Les LLMs indexent l'intégralité de la page — un contenu structuré en bas reste exploitable même s'il n'est pas dans le premier tiers.</span>
+          </div>
+        </li>
+        <li>
+          <div class="prio-num">5</div>
+          <div class="prio-content">
+            <strong>Implémenter FAQPage JSON-LD sur les pages catégories avec H2 questions</strong>
+            <div class="prio-action">→ Applicable sur les pages disposant déjà de H2 en forme de questions (/panneau-contreplaque, /panneau-melamine, /panneau-mdf, /panneau-osb). Action de faible coût sur la structure existante.</div>
+            <span>Depuis août 2023, Google ne génère plus de rich results FAQPage pour les sites marchands. L'impact sur les citations LLM est incertain. À traiter comme une bonne pratique de balisage, sans en attendre de résultats mesurables à court terme.</span>
+          </div>
+        </li>
+        <li>
+          <div class="prio-num">6</div>
+          <div class="prio-content">
+            <strong>Initier une présence sur les forums professionnels bois</strong>
+            <div class="prio-action">→ Cibles : lairdubois.fr · lamortaise.com · copaindescopeaux.fr. Approche en 3 étapes (M2 à M6) — observation, contribution experte, puis mention naturelle de Barillet. Voir section 4.2 pour le protocole détaillé.</div>
+            <span>Ces forums sont activement indexés dans les corpus LLM. Une mention dans un fil de discussion populaire peut se retrouver citée dans les réponses IA pendant plusieurs mois.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </div>
+
+  <!-- ROADMAP GANTT -->
+  <div class="section collapsed" id="roadmap">
+    <div class="section-header" onclick="toggleSection(this)">
+      <h2>Roadmap — Vue d'ensemble</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+      <p class="note" style="margin-bottom:18px;font-style:italic;">Timing indicatif — les durées dépendent des ressources disponibles et des résultats du Brand Tracker mensuel. Les phases peuvent se chevaucher selon les priorités client.</p>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;min-width:540px;table-layout:fixed;border-collapse:separate;border-spacing:0 5px;">
+          <colgroup>
+            <col style="width:178px;">
+            <col><col><col><col><col><col><col>
+          </colgroup>
+          <thead>
+            <tr>
+              <td></td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M0</td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M1</td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M2</td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M3</td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M4</td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M5</td>
+              <td style="text-align:center;font-size:10px;font-weight:700;color:#888;letter-spacing:.5px;padding-bottom:4px;border-bottom:2px solid #ddd;">M6</td>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- ROW 1 : Phase 1 — Diagnostic (M0-M2) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Accès bots LLM<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 1 · M0-M2</span></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#E9540D;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.1</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Whitelist WAF Cloudflare</span>
+                </div>
+              </td>
+              <td colspan="4" style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+            <!-- ROW 2 : Phase 2 — Technique (M0-M2) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Données structurées<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 2 · M0-M2</span></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#0A3856;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.2</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Technique · Organization + LocalBusiness</span>
+                </div>
+              </td>
+              <td colspan="4" style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+            <!-- ROW 3 : Phase 3 — Owned Media (M1-M3) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Contenu — Axe 1<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 3 · M1-M3</span></td>
+              <td style="background:#f4f4f4;border-radius:4px;"></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#2d7a4f;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.3</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Owned Media · Guides evergreen</span>
+                </div>
+              </td>
+              <td colspan="3" style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+            <!-- ROW 4 : Axe 2 — Pages agences (M1-M3) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Pages agences — Axe 2<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Axe 2 · M1-M3</span></td>
+              <td style="background:#f4f4f4;border-radius:4px;"></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#028090;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">AXE 2</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Agences · Contenu + areaServed schema</span>
+                </div>
+              </td>
+              <td colspan="3" style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+            <!-- ROW 5 : GEOlocal Axe 2 (M2-M4) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Baseline géo — Axe 2<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">GEOlocal · M2-M4</span></td>
+              <td colspan="2" style="background:#f4f4f4;border-radius:4px;"></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#028090;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">AXE 2</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">GEOlocal · Panel + tracker mensuel</span>
+                </div>
+              </td>
+              <td colspan="2" style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+            <!-- ROW 6 : Phase 4 — Earned Media (M2-M4) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Earned Media<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 4 · M2-M4</span></td>
+              <td colspan="2" style="background:#f4f4f4;border-radius:4px;"></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#1C7293;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.4</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Earned Media · Forums + listicles tiers</span>
+                </div>
+              </td>
+              <td colspan="2" style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+            <!-- ROW 7 : Phase 5 — Pilotage (M3-M5) -->
+            <tr>
+              <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Pilotage mensuel<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 5 · M3-M5</span></td>
+              <td colspan="3" style="background:#f4f4f4;border-radius:4px;"></td>
+              <td colspan="3" style="padding:0 2px;">
+                <div style="background:#5a6776;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                  <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.5</span>
+                  <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Pilotage · Brand Tracker Axe 1+2</span>
+                </div>
+              </td>
+              <td style="background:#f4f4f4;border-radius:4px;"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="section collapsed" id="phase1">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="phase-badge">Phase 1</div>
+      <h2>Diagnostic — J1 à J5</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Avant d'optimiser quoi que ce soit, il faut établir deux certitudes : est-ce que les robots des LLMs peuvent accéder au site ? Et quelle image de Barillet renvoient-ils aujourd'hui quand on leur pose des questions métier ? Sans cette base, toutes les actions suivantes sont à l'aveugle.</p>
+    <h3 class="sub">1.1 Accessibilité des bots LLM</h3>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 Challenge JavaScript Cloudflare — configuration WAF à vérifier pour les bots LLM</div>
+      <div class="action">Demander à l'équipe technique un audit des règles WAF Cloudflare pour vérifier que GPTBot, ClaudeBot, PerplexityBot et Gemini-bot sont bien whitelistés (bypass du JS challenge). Si ce n'est pas le cas, ajouter ces user-agents dans les règles d'exception. Opération de configuration, sans impact sur la sécurité du site pour les visiteurs humains.</div>
+      <div class="finding-body">
+      <p>Le site utilise un challenge JavaScript (SlowAES cookie géré par Cloudflare) qui oblige tout client HTTP non-browser à résoudre une équation de chiffrement avant d'accéder au contenu.</p>
+      <p>Les bots établis sont whitelistés au niveau WAF : Googlebot passe (confirmé par Rich Results Test) et Bingbot passe (confirmé par les données Bing Webmaster Tools).</p>
+      <p>En revanche, les bots LLM — GPTBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot, Gemini-bot — sont des agents récents qui ne figurent probablement pas dans les règles WAF configurées à l'origine.</p>
+      <p>Leur accès n'est ni confirmé ni infirmé sans audit de la configuration Cloudflare.</p>
+    </div>
+      
+    </div>
+
+    <div class="finding ok">
+      <div class="finding-title">🟢 Robots.txt : aucun blocage explicite des LLMs</div>
+      <div class="finding-body">
+      <p>Le fichier robots.txt ne contient aucune directive Disallow ciblant GPTBot, ClaudeBot, PerplexityBot ou Gemini-bot.</p>
+      <p>La règle globale <code>User-agent: *</code> ne bloque que des patterns d'URL spécifiques (paramètres de filtrage e-commerce, PDFs).</p>
+      <p>Dès que le challenge JS sera désactivé pour ces bots, ils pourront crawler librement.</p>
+    </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Bot LLM</th>
+          <th>User-agent officiel</th>
+          <th>Statut robots.txt</th>
+          <th>Whitelist WAF Cloudflare</th>
+          <th>Accès effectif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Googlebot</td>
+          <td>Googlebot</td>
+          <td><span class="pill pill-green">Autorisé</span></td>
+          <td><span class="pill pill-green">Confirmé</span></td>
+          <td><span class="pill pill-green">Oui</span></td>
+        </tr>
+        <tr>
+          <td>Bingbot (Microsoft)</td>
+          <td>Bingbot</td>
+          <td><span class="pill pill-green">Autorisé</span></td>
+          <td><span class="pill pill-green">Confirmé</span></td>
+          <td><span class="pill pill-green">Oui</span></td>
+        </tr>
+        <tr>
+          <td>ChatGPT (OpenAI)</td>
+          <td>GPTBot / OAI-SearchBot</td>
+          <td><span class="pill pill-green">Autorisé</span></td>
+          <td><span class="pill pill-amber">Non vérifié</span></td>
+          <td><span class="pill pill-amber">À confirmer</span></td>
+        </tr>
+        <tr>
+          <td>Claude (Anthropic)</td>
+          <td>ClaudeBot / Claude-User</td>
+          <td><span class="pill pill-green">Autorisé</span></td>
+          <td><span class="pill pill-amber">Non vérifié</span></td>
+          <td><span class="pill pill-amber">À confirmer</span></td>
+        </tr>
+        <tr>
+          <td>Perplexity</td>
+          <td>PerplexityBot</td>
+          <td><span class="pill pill-green">Autorisé</span></td>
+          <td><span class="pill pill-amber">Non vérifié</span></td>
+          <td><span class="pill pill-amber">À confirmer</span></td>
+        </tr>
+        <tr>
+          <td>Gemini (Google)</td>
+          <td>Google-Extended</td>
+          <td><span class="pill pill-green">Autorisé</span></td>
+          <td><span class="pill pill-amber">Non vérifié</span></td>
+          <td><span class="pill pill-amber">À confirmer</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">1.2 Exposition aux AI Overviews — Analyse Empirik (Google Belgique)</h3>
+
+    <p class="note" style="margin-bottom:16px;">Source : rapport Analyse d'Impact AI Overviews Empirik — 10 mots-clés testés sur Google Belgique.</p>
+
+    <div class="finding ok" style="margin-bottom:20px;">
+      <div class="finding-title">✅ Action recommandée : développer du contenu informatif ciblant les requêtes comparatives et de conseil</div>
+      <div class="finding-body">
+      <p>Les AI Overviews n'apparaissent que sur les requêtes informationnelles — pas sur les requêtes produit courtes. C'est une opportunité directe : créer des guides comparatifs et des contenus "comment choisir" positionne Barillet pour apparaître dans les AIO sur ces requêtes.</p>
+      <p>Quand Google génère un résumé IA (AI Overview), il cite des sources pour appuyer sa réponse. 93,8% de ces sources sont des sites tiers — forums, guides, médias spécialisés — et non des pages produits de grandes marques. Barillet n'est aujourd'hui pas dans le top 20 des sites cités. La voie d'entrée : créer du contenu expert sur les thématiques identifiées en phase 3, de façon à devenir une source que Google juge digne d'être citée.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+      <div class="score-card" style="flex:1;min-width:160px;">
+        <div class="score-val amber">30%</div>
+        <div class="score-label">Taux d'apparition AIO</div>
+        <div class="score-status tag-amber">Exposition modérée</div>
+      </div>
+      <div class="score-card" style="flex:1;min-width:160px;">
+        <div class="score-val" style="color:var(--ok);font-size:28px;font-weight:700;">93,8%</div>
+        <div class="score-label">Sources AIO = sites tiers (forums, guides, médias)</div>
+        <div class="score-status" style="background:#e8f5ee;color:var(--ok);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-top:6px;">Opportunité forte</div>
+      </div>
+      <div class="score-card" style="flex:1;min-width:160px;">
+        <div class="score-val amber">43%</div>
+        <div class="score-label">Similarité AIO / top 10 SEO</div>
+        <div class="score-status tag-amber">Chevauchement partiel</div>
+      </div>
+
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 Pattern clé : les AIO n'apparaissent que sur les requêtes informationnelles</div>
+      <div class="finding-body">
+      <p>Sur les 10 requêtes testées, seules 3 déclenchent un AIO (30%).</p>
+      <p>Le pattern est net : les requêtes produit courtes (panneau MDF, contreplaqué bouleau, panneau OSB) ne déclenchent pas d'AIO — Google renvoie des résultats e-commerce classiques.</p>
+      <p>Les AIO apparaissent sur les requêtes à intention comparative ou de conseil (différence contreplaqué MDF, quel panneau bois pour menuiserie) et sur les requêtes de type service (négoce bois en ligne).</p>
+      <p>C'est exactement le type de contenu à créer en priorité pour capter les AIO.</p>
+    </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Requête</th>
+          <th>Intention</th>
+          <th>AIO présent ?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>contreplaqué bouleau</td>
+          <td>Produit</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>panneau mélaminé</td>
+          <td>Produit</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>panneau MDF</td>
+          <td>Produit</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>panneau OSB</td>
+          <td>Produit</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>panneau contreplaqué</td>
+          <td>Produit</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>différence contreplaqué MDF</td>
+          <td>Informationnelle</td>
+          <td><span class="pill pill-green">Oui</span></td>
+        </tr>
+        <tr>
+          <td>quel panneau bois pour menuiserie</td>
+          <td>Informationnelle</td>
+          <td><span class="pill pill-green">Oui</span></td>
+        </tr>
+        <tr>
+          <td>acheter panneau bois professionnel</td>
+          <td>Transactionnelle</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>fournisseur contreplaqué France</td>
+          <td>Commerciale</td>
+          <td><span class="pill pill-red">Non</span></td>
+        </tr>
+        <tr>
+          <td>négoce bois en ligne</td>
+          <td>Navigationnelle</td>
+          <td><span class="pill pill-green">Oui</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note" style="margin-top:12px;">Lecture des données AIO : les sources testées couvrent 10 requêtes sur Google Belgique. Le taux de 30% d'apparition AIO reflète ce périmètre spécifique. Pour un suivi représentatif, étendre le panel à 30-50 requêtes sur Google France.</p>
+
+    <h3 class="sub">1.3 Panel de 30 prompts de surveillance — LLM Brand Tracker actif</h3>
+    <p class="note" style="margin-bottom:14px;">Panel actif dans le LLM Brand Tracker Empirik. 30 prompts rédigés en persona professionnel (menuisier, charpentier, agenceur, artisan), testés sur ChatGPT et Gemini avec suivi des concurrents : Dispano, Point P, SM Bois, Gedibois, Vidal. Le nombre de fan-out queries par prompt indique le volume de sous-requêtes générées par le LLM pour répondre — plus ce chiffre est élevé, plus le sujet est complexe à couvrir.</p>
+
+    <details style="margin-bottom:16px;">
+      <summary>Voir les 30 prompts actifs du panel (fan-out queries LLM)</summary>
+      <div style="padding:14px 16px 4px;">
+    <div class="prompt-grid">
+      <div class="prompt-item prompt-comparaison">
+        <div class="prompt-type">Marques distribuées · 165 fan-out</div>
+        <div class="prompt-text">"Je cherche un distributeur qui propose les marques Egger et Polyrey pour mes réalisations."</div>
+      </div>
+      <div class="prompt-item prompt-comparaison">
+        <div class="prompt-type">Marques distribuées · 149 fan-out</div>
+        <div class="prompt-text">"Je cherche un distributeur des marques Fundermax ou Trespa pour une façade extérieure."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Approvisionnement pro · 144 fan-out</div>
+        <div class="prompt-text">"Je cherche un magasin bois pro adapté aux artisans menuisiers et agenceurs."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Façade extérieure · 137 fan-out</div>
+        <div class="prompt-text">"Je cherche un distributeur de panneaux de façade pour une rénovation extérieure."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Construction · 133 fan-out</div>
+        <div class="prompt-text">"Je cherche où acheter de l'OSB en gros pour un chantier."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Panneaux agencement · 125 fan-out</div>
+        <div class="prompt-text">"Je suis professionnel et j'ai besoin d'acheter du MDF et du mélaminé en gros ou sur mesure."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Panneaux agencement · 125 fan-out</div>
+        <div class="prompt-text">"Je cherche où acheter du mélaminé blanc grand format pour un chantier professionnel."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Livraison chantier · 116 fan-out</div>
+        <div class="prompt-text">"Je cherche un négoce bois qui propose la livraison chantier pour mes matériaux."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Approvisionnement local · 110 fan-out</div>
+        <div class="prompt-text">"Je cherche un fournisseur local de matériaux de menuiserie pour mes chantiers."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Agencement commercial · 108 fan-out</div>
+        <div class="prompt-text">"Je suis agenceur et je cherche un fournisseur de bois pour l'agencement de magasins."</div>
+      </div>
+      <div class="prompt-item prompt-comparaison">
+        <div class="prompt-type">HPL / Stratifié déco · 105 fan-out</div>
+        <div class="prompt-text">"Je cherche un distributeur de panneaux stratifiés décoratifs (HPL) pour un projet d'agencement."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Construction bois · 104 fan-out</div>
+        <div class="prompt-text">"Je suis charpentier et j'ai besoin d'un fournisseur de bois de structure et panneaux associés."</div>
+      </div>
+      <div class="prompt-item prompt-comparaison">
+        <div class="prompt-type">Alternative concurrents · 104 fan-out</div>
+        <div class="prompt-text">"Je cherche une alternative à Point P plus spécialisée pour les menuisiers professionnels."</div>
+      </div>
+      <div class="prompt-item prompt-local">
+        <div class="prompt-type">Local / région · 103 fan-out</div>
+        <div class="prompt-text">"Je cherche un spécialiste bois et dérivés dans le centre de la France (ou autre région)."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Découpe sur mesure · 100 fan-out</div>
+        <div class="prompt-text">"Je suis artisan et je cherche un négoce bois qui propose la découpe de panneaux sur mesure."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Contreplaqué gros volume · 98 fan-out</div>
+        <div class="prompt-text">"Je cherche un grossiste en contreplaqué okoumé ou peuplier en grandes quantités."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Terrasse extérieur · 96 fan-out</div>
+        <div class="prompt-text">"Je cherche un grossiste en bois de terrasse (composite ou exotique) pour un chantier."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Plan de travail · 93 fan-out</div>
+        <div class="prompt-text">"Je suis agenceur et je cherche où acheter un plan de travail sur mesure pour un client."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Contreplaqué marine · 90 fan-out</div>
+        <div class="prompt-text">"Je suis menuisier et j'ai besoin d'un fournisseur de contreplaqué marine professionnel."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Bardage extérieur · 86 fan-out</div>
+        <div class="prompt-text">"Je cherche un fournisseur de bardage bois classe 4 pour un projet extérieur."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Panneaux décoratifs · 83 fan-out</div>
+        <div class="prompt-text">"Je cherche un stockiste avec un large choix de panneaux décoratifs en bois."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Fibre-ciment façade · 79 fan-out</div>
+        <div class="prompt-text">"Je cherche un fournisseur de panneaux fibre-ciment pour une façade."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Mélaminé sur mesure · 75 fan-out</div>
+        <div class="prompt-text">"Je suis menuisier et je cherche un fournisseur de panneaux mélaminés sur mesure en France."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Bardage claire-voie · 75 fan-out</div>
+        <div class="prompt-text">"Je cherche du bardage claire-voie professionnel pour un projet d'architecture."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Panneaux + chants · 74 fan-out</div>
+        <div class="prompt-text">"Je cherche un fournisseur qui propose à la fois les panneaux et les bandes de chant assorties."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Construction CTBX/LVL · 73 fan-out</div>
+        <div class="prompt-text">"Je cherche un distributeur de panneaux bois pour la construction (CTBX, OSB, LVL…)."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Grossiste menuiserie · 72 fan-out</div>
+        <div class="prompt-text">"Je suis artisan et je cherche un grossiste en panneaux bois pour mon atelier de menuiserie."</div>
+      </div>
+      <div class="prompt-item prompt-comparaison">
+        <div class="prompt-type">Agencement intérieur · 66 fan-out</div>
+        <div class="prompt-text">"Je cherche les meilleurs fournisseurs pour l'agencement intérieur (MDF, mélaminé, stratifié)."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Contreplaqué coffrage · 65 fan-out</div>
+        <div class="prompt-text">"Je cherche le prix pro de plaques de contreplaqué de coffrage pour un chantier."</div>
+      </div>
+      <div class="prompt-item prompt-transac">
+        <div class="prompt-type">Découpe panneaux · 41 fan-out</div>
+        <div class="prompt-text">"Je veux faire découper des panneaux bois sur mesure pour un projet professionnel."</div>
+      </div>
+    </div>
+      </div>
+    </details>
+
+    <h3 class="sub">1.4 Visibilité LLM actuelle — Résultats du LLM Brand Tracker</h3>
+
+    
+    <div class="finding ok" style="margin-bottom:20px;">
+      <div class="finding-title">✅ Deux leviers immédiats issus de ce diagnostic</div>
+      <div class="finding-body">
+      <p><strong>Attaquer les 3 sujets à 0% :</strong> fibre-ciment façade, plan de travail sur mesure, panneaux + bandes de chant. Ces pages n'existent pas — Barillet ne peut pas être cité. Voir section 3.4 pour le plan de production.</p>
+      <p><strong>Consolider les 5 sujets au-dessus de 10% :</strong> marques Egger/Polyrey (19,2%), approvisionnement régional (13,2%), mélaminé blanc (12,9%), Fundermax/Trespa (12,5%), contreplaqué okoumé/peuplier (11,0%). Ce sont les positions à défendre et à renforcer en priorité.</p>
+      </div>
+    </div>
+
+<div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
+      <div class="score-card" style="flex:1;min-width:140px;">
+        <div class="score-val red">4,5%</div>
+        <div class="score-label">Mentions Barillet (moyenne)</div>
+      </div>
+      <div class="score-card" style="flex:1;min-width:140px;">
+        <div class="score-val amber">24,3%</div>
+        <div class="score-label">Dispano (1er concurrent)</div>
+      </div>
+      <div class="score-card" style="flex:1;min-width:140px;">
+        <div class="score-val amber">5 / 30</div>
+        <div class="score-label">Prompts où Barillet > 10%</div>
+      </div>
+    </div>
+
+    <div class="finding critical">
+      <div class="finding-title">🔴 Barillet est peu présent dans les réponses LLM : 4,5% de mentions vs 24,3% pour Dispano seul</div>
+      <div class="finding-body">
+      <p>Sur 9 507 réponses analysées (30 prompts métier, ChatGPT + Gemini), Barillet est cité dans 4,5% des cas. Dispano domine largement avec 24,3% des réponses, suivi de Point P (12,5%) et Gedibois (5,4%). Ces chiffres sont à lire avec un biais à garder en tête : la forte présence de Dispano est en partie liée à sa surreprésentation sur Gemini — plateforme ajoutée au tracker seulement en mars 2026, ce qui rend les comparaisons avant/après non directement équivalentes.</p>
+
+      <p>Le cas le plus défavorable est le prompt "alternative à Point P pour menuisiers" où les concurrents sont cités dans 99,7% des réponses, Barillet dans seulement 0,9%.</p>
+      
+      <p>3 prompts donnent 0% de mentions : fibre-ciment façade, plan de travail sur mesure, et panneaux + bandes de chant — trois sujets pour lesquels Barillet n'a pas de contenu ciblé.</p>
+    </div>
+    </div>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 5 prompts où Barillet est relativement bien positionné (> 10%)</div>
+      <div class="finding-body">
+      <p>Ces sujets sont ceux sur lesquels Barillet a déjà une présence LLM mesurable — ils constituent le socle à consolider en priorité avant d'attaquer les sujets à 0%.</p>
+    </div>
+    </div>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Prompt</th>
+          <th>Barillet</th>
+          <th>Concurrents</th>
+          <th>Gap</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#f0faf4;">
+          <td>Distributeur marques Egger et Polyrey</td>
+          <td><strong style="color:var(--ok)">19,2%</strong></td>
+          <td>59,4%</td>
+          <td>−40 pts</td>
+        </tr>
+        <tr style="background:#f0faf4;">
+          <td>Spécialiste bois et dérivés en région</td>
+          <td><strong style="color:var(--ok)">13,2%</strong></td>
+          <td>29,2%</td>
+          <td>−16 pts</td>
+        </tr>
+        <tr style="background:#f0faf4;">
+          <td>Mélaminé blanc grand format chantier pro</td>
+          <td><strong style="color:var(--ok)">12,9%</strong></td>
+          <td>55,5%</td>
+          <td>−43 pts</td>
+        </tr>
+        <tr style="background:#f0faf4;">
+          <td>Distributeur Fundermax / Trespa façade</td>
+          <td><strong style="color:var(--ok)">12,5%</strong></td>
+          <td>42,9%</td>
+          <td>−30 pts</td>
+        </tr>
+        <tr style="background:#f0faf4;">
+          <td>Grossiste contreplaqué okoumé / peuplier</td>
+          <td><strong style="color:var(--ok)">11,0%</strong></td>
+          <td>33,9%</td>
+          <td>−23 pts</td>
+        </tr>
+        <tr>
+          <td>Panneaux construction CTBX / OSB / LVL</td>
+          <td>9,4%</td>
+          <td>52,4%</td>
+          <td>−43 pts</td>
+        </tr>
+        <tr>
+          <td>Magasin bois pro menuisiers / agenceurs</td>
+          <td>6,0%</td>
+          <td>60,5%</td>
+          <td>−55 pts</td>
+        </tr>
+        <tr>
+          <td>Fournisseur mélaminés sur mesure France</td>
+          <td>6,0%</td>
+          <td>35,1%</td>
+          <td>−29 pts</td>
+        </tr>
+        <tr>
+          <td>Bardage bois classe 4 extérieur</td>
+          <td>3,1%</td>
+          <td>34,2%</td>
+          <td>−31 pts</td>
+        </tr>
+        <tr>
+          <td>Négoce bois livraison chantier</td>
+          <td>2,8%</td>
+          <td>36,4%</td>
+          <td>−34 pts</td>
+        </tr>
+        <tr>
+          <td>Fournisseur contreplaqué marine pro</td>
+          <td>2,8%</td>
+          <td>46,4%</td>
+          <td>−44 pts</td>
+        </tr>
+        <tr>
+          <td>MDF et mélaminé en gros / sur mesure</td>
+          <td>2,8%</td>
+          <td>46,4%</td>
+          <td>−44 pts</td>
+        </tr>
+        <tr>
+          <td>OSB en gros pour chantier</td>
+          <td>2,5%</td>
+          <td>54,9%</td>
+          <td>−52 pts</td>
+        </tr>
+        <tr>
+          <td>Grossiste bois terrasse composite / exotique</td>
+          <td>2,2%</td>
+          <td>34,8%</td>
+          <td>−33 pts</td>
+        </tr>
+        <tr>
+          <td>Fournisseur bois agencement de magasins</td>
+          <td>2,2%</td>
+          <td>38,2%</td>
+          <td>−36 pts</td>
+        </tr>
+        <tr>
+          <td>Distributeur panneaux stratifiés HPL</td>
+          <td>1,9%</td>
+          <td>34,8%</td>
+          <td>−33 pts</td>
+        </tr>
+        <tr>
+          <td>Grossiste panneaux bois menuiserie atelier</td>
+          <td>1,6%</td>
+          <td>53,6%</td>
+          <td>−52 pts</td>
+        </tr>
+        <tr>
+          <td>Fournisseur bois structure charpente</td>
+          <td>1,6%</td>
+          <td>46,7%</td>
+          <td>−45 pts</td>
+        </tr>
+        <tr>
+          <td>Fournisseurs agencement intérieur MDF mélaminé</td>
+          <td>1,3%</td>
+          <td>36,1%</td>
+          <td>−35 pts</td>
+        </tr>
+        <tr>
+          <td>Distributeur panneaux façade rénovation</td>
+          <td>1,3%</td>
+          <td>17,6%</td>
+          <td>−16 pts</td>
+        </tr>
+        <tr>
+          <td>Fournisseur local menuiserie chantiers</td>
+          <td>1,3%</td>
+          <td>32,4%</td>
+          <td>−31 pts</td>
+        </tr>
+        <tr>
+          <td>Prix pro contreplaqué coffrage chantier</td>
+          <td>0,9%</td>
+          <td>25,4%</td>
+          <td>−25 pts</td>
+        </tr>
+        <tr style="background:#fffbf0;">
+          <td>Alternative à Point P pour menuisiers <span title="Point P étant nommé dans le prompt, il est cité quasi-systématiquement par construction — ce résultat ne reflète pas la présence organique des concurrents." style="cursor:help;color:var(--amber);font-size:12px;font-weight:600;margin-left:4px;">⚠ biais</span></td>
+          <td>0,9%</td>
+          <td><strong style="color:var(--warning)">99,7%</strong></td>
+          <td>−99 pts</td>
+        </tr>
+        <tr>
+          <td>Négoce bois découpe panneaux sur mesure</td>
+          <td>0,9%</td>
+          <td>53,9%</td>
+          <td>−53 pts</td>
+        </tr>
+        <tr>
+          <td>Bardage claire-voie professionnel</td>
+          <td>0,6%</td>
+          <td>6,9%</td>
+          <td>−6 pts</td>
+        </tr>
+        <tr>
+          <td>Stockiste panneaux décoratifs bois</td>
+          <td>0,6%</td>
+          <td>33,0%</td>
+          <td>−32 pts</td>
+        </tr>
+        <tr>
+          <td>Découpe panneaux bois sur mesure pro</td>
+          <td>0,3%</td>
+          <td>18,2%</td>
+          <td>−18 pts</td>
+        </tr>
+        <tr style="background:#fff0f0;">
+          <td>Fournisseur panneaux fibre-ciment façade</td>
+          <td><strong style="color:var(--warning)">0,0%</strong></td>
+          <td>15,7%</td>
+          <td>−16 pts</td>
+        </tr>
+        <tr style="background:#fff0f0;">
+          <td>Fournisseur panneaux + bandes de chant</td>
+          <td><strong style="color:var(--warning)">0,0%</strong></td>
+          <td>36,1%</td>
+          <td>−36 pts</td>
+        </tr>
+        <tr style="background:#fff0f0;">
+          <td>Plan de travail sur mesure agenceur</td>
+          <td><strong style="color:var(--warning)">0,0%</strong></td>
+          <td>25,4%</td>
+          <td>−25 pts</td>
+        </tr>
+      </tbody>
+    </table>
+  <p class="note" style="margin-top:12px;">⚠ Note méthodologique (1) : le prompt "alternative à Point P" nomme explicitement un concurrent dans la question. Point P y est cité dans 99,7% des réponses par construction, pas en raison de sa présence organique dans le corpus LLM. Ce prompt introduit un biais à la hausse dans les chiffres concurrents et devrait être analysé séparément ou exclu du calcul de référence.</p>
+  <p class="note" style="margin-top:8px;">⚠ Note méthodologique (2) — Évolution du périmètre de mesure : Gemini a été ajouté au LLM Brand Tracker en mars 2026. La forte progression apparente de Dispano à cette date n'est pas liée à une amélioration de son contenu — elle reflète sa présence structurellement plus élevée sur Gemini par rapport à ChatGPT. Les données antérieures à mars 2026 (ChatGPT uniquement) et postérieures (ChatGPT + Gemini) ne sont pas directement comparables. Pour un suivi de tendance fiable, distinguer systématiquement les résultats par plateforme.</p>
+
+    <h3 class="sub">1.5 Visibilité locale — Requêtes géographiques <span style="font-size:12px;font-weight:400;color:var(--amber);margin-left:8px;">Axe 2 — Baseline à construire</span></h3>
+
+    <div class="finding warning">
+      <div class="finding-title">🔶 Panel GEOlocal actif depuis le 23/05/2026 — baseline en cours de construction</div>
+      <div class="action">
+        <strong>Actions prioritaires :</strong>
+        <ol style="padding-left:18px;margin-top:8px;line-height:2.2;">
+          <li>Valider avec le client les 10 prompts GEOlocal intégrés au tracker (voir tableau ci-dessous) — confirmer qu'ils correspondent aux zones géographiques prioritaires du réseau.</li>
+          <li>Attendre les premières données de citation (collecte démarrée le 23/05/2026) pour établir la baseline Axe 2.</li>
+          <li>Enrichir chaque page <code>/agence/[ville]</code> avec un paragraphe éditorial (zone desservie, types de clients, spécialités, délais de livraison).</li>
+          <li>Ajouter <code>areaServed</code> et <code>aggregateRating</code> dans le schema LocalBusiness de chaque agence.</li>
+          <li>Auditer et optimiser les fiches Google Business Profile (photos, horaires, catégories, description).</li>
+        </ol>
+      </div>
+      <div class="finding-body">
+        <p>Une part significative des requêtes professionnelles intègre une localisation : "fournisseur bois professionnel à [ville]", "distributeur panneaux [région]", "négociant bois livraison chantier [département]". Les LLMs peuvent recommander des acteurs locaux — c'est l'un des leviers les plus directs pour capter des clients pro en phase de recherche de fournisseur.</p>
+        <p>Barillet dispose d'un réseau d'agences réparti sur plusieurs bassins géographiques. La question clé : ces agences sont-elles citées par les LLMs sur des requêtes locales ? 10 prompts ont été intégrés au LLM Brand Tracker le 23/05/2026 pour y répondre — les données seront disponibles dans les prochaines semaines.</p>
+        <p class="note" style="margin-top:12px;background:#fff8ed;border-left:3px solid #E9540D;padding:10px 14px;border-radius:0 6px 6px 0;">⚠ Ces prompts sont à valider avec le client : s'assurer qu'ils couvrent bien les zones géographiques où le réseau Barillet est implanté et actif commercialement.</p>
+
+        <h4 style="margin-top:22px;margin-bottom:12px;font-size:14px;font-weight:600;">Panel GEOlocal — 10 prompts actifs dans le LLM Brand Tracker</h4>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Prompt</th>
+              <th>Ville / Zone ciblée</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>"Distributeur de panneaux MDF, contreplaqué et OSB à Amiens — tu as une adresse professionnelle ?"</td><td>Amiens</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Distributeur spécialisé bois et panneaux à Lille pour un artisan menuisier — qui contacter ?"</td><td>Lille</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Fournisseur panneaux mélaminés, MDF et OSB à Dijon pour commande professionnelle — tu connais ?"</td><td>Dijon</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Grossiste ou négoce bois à Poitiers pour artisan : qui livre les panneaux sur chantier ?"</td><td>Poitiers</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Je cherche un fournisseur de contreplaqué et panneaux MDF à Marseille. Tu as des recommandations ?"</td><td>Marseille</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Je suis ébéniste à Besançon, quel négoce bois me recommandes-tu pour m'approvisionner en panneaux ?"</td><td>Besançon</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Je suis menuisier à Limoges, où trouver un distributeur de panneaux bois fiable avec livraison chantier ?"</td><td>Limoges</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Où acheter des panneaux de bois en gros en Île-de-France pour un chantier pro ?"</td><td>Île-de-France</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Où s'approvisionner en panneaux bois et dérivés pour un atelier de menuiserie à Angoulême ?"</td><td>Angoulême</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+            <tr><td>"Quel est le meilleur distributeur de panneaux bois à Lyon pour un professionnel ?"</td><td>Lyon</td><td><span class="pill pill-amber">Collecte en cours</span></td></tr>
+          </tbody>
+        </table>
+        <p class="note" style="margin-top:10px;">Données collectées depuis le 23/05/2026. Les premiers résultats permettront d'établir la baseline Axe 2 et d'identifier les zones géographiques où Barillet est le moins visible dans les réponses LLM.</p>
+
+        <h4 style="margin-top:22px;margin-bottom:12px;font-size:14px;font-weight:600;">État des signaux techniques existants pour la visibilité locale</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Signal</th>
+              <th>État actuel</th>
+              <th>Impact potentiel sur les LLMs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Schema LocalBusiness sur pages <code>/agence/</code></td>
+              <td style="color:var(--ok);font-weight:600;">✓ Présent et valide (Microdata, confirmé Rich Results Test sur /agence/arques)</td>
+              <td>Fort — structure reconnue par Googlebot et indexée</td>
+            </tr>
+            <tr>
+              <td>Contenu éditorial sur pages agences</td>
+              <td style="color:var(--warning);font-weight:600;">✗ Insuffisant — principalement adresse + horaires</td>
+              <td>Fort — les LLMs lisent le contenu textuel de la page, pas uniquement les schémas</td>
+            </tr>
+            <tr>
+              <td>Champ <code>areaServed</code> dans LocalBusiness</td>
+              <td style="color:var(--warning);font-weight:600;">✗ Absent</td>
+              <td>Fort — signal explicite de couverture géographique</td>
+            </tr>
+            <tr>
+              <td>Google Business Profile (fiches agences)</td>
+              <td style="color:var(--amber);font-weight:600;">⚠ Non audité</td>
+              <td>Très fort — GBP alimente directement les réponses Google (AI Overviews locaux)</td>
+            </tr>
+            <tr>
+              <td>Avis clients / <code>aggregateRating</code> dans LocalBusiness</td>
+              <td style="color:var(--warning);font-weight:600;">✗ Absent du schema</td>
+              <td>Moyen — signal de confiance et de popularité locale</td>
+            </tr>
+            <tr>
+              <td>Citations dans annuaires régionaux/sectoriels</td>
+              <td style="color:var(--amber);font-weight:600;">⚠ Non audité</td>
+              <td>Moyen — citations tiers = signal d'autorité locale pour les LLMs</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="note" style="margin-top:16px;">Note : les pages agences ont le potentiel technique pour être bien référencées localement (schema valide, pages indexées). Ce qui manque est le signal éditorial et le renforcement des données géographiques explicites que les LLMs utilisent pour répondre aux requêtes locales.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="section collapsed" id="phase2">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="phase-badge">Phase 2</div>
+      <h2>Technique — Semaines 1-2</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs lisent le code HTML au même titre que le contenu textuel. Des données structurées bien renseignées aident les moteurs IA à identifier avec certitude ce qu'est Barillet, ce qu'il distribue et où il opère. Ce sont des signaux d'identité de marque — leur impact sur les citations LLM reste incertain, mais ils constituent une bonne pratique SEO fondamentale à coût limité.</p>
+    <div class="finding warning" style="margin-bottom:24px;">
+      <div class="finding-title">🟡 Contexte : état de l'art GEO en mai 2026</div>
+      <div class="finding-body">
+      <p>Les pratiques GEO sont en cours de stabilisation. Google lui-même précise dans son guide officiel (mai 2026) que les données structurées <strong>ne sont pas requises</strong> pour apparaître dans les AI Overviews, et qu'il n'existe "pas de balisage schema.org spécial à ajouter". Les recommandations ci-dessous restent pertinentes d'un point de vue SEO fondamental — elles améliorent la lisibilité, l'éligibilité aux rich results et la clarté de la page — mais leurs effets spécifiques sur les citations LLM sont à ce stade des hypothèses de travail, pas des certitudes mesurées.</p>
+      <p>La règle la plus solide reste celle que Google formule : créer du contenu utile, non générique, qui apporte un point de vue expert unique. C'est la fondation commune au SEO et au GEO.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">2.1 Audit des données structurées</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Type de schéma</th>
+          <th>Impact GEO estimé</th>
+          <th>Statut actuel</th>
+          <th>Priorité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Organization</strong></td>
+          <td>Identité de marque</td>
+          <td><span class="pill pill-amber">Présent (JSON-LD, incomplet)</span></td>
+          <td><span class="pill pill-amber">Compléter</span></td>
+        </tr>
+        <tr>
+          <td><strong>WebSite</strong></td>
+          <td>Sitelinks, SearchAction</td>
+          <td><span class="pill pill-green">Présent</span></td>
+          <td><span class="pill pill-green">OK</span></td>
+        </tr>
+        <tr>
+          <td><strong>Product</strong></td>
+          <td>Citations e-commerce</td>
+          <td><span class="pill pill-green">Présent et valide — Microdata</span></td>
+          <td><span class="pill pill-green">OK</span></td>
+        </tr>
+        <tr>
+          <td><strong>BreadcrumbList</strong></td>
+          <td>Navigation</td>
+          <td><span class="pill pill-green">Présent et valide — Microdata (confirmé Rich Results Test)</span></td>
+          <td><span class="pill pill-green">OK</span></td>
+        </tr>
+        <tr>
+          <td><strong>FAQPage</strong></td>
+          <td>Signal structurel LLMs (rich results Google réservés gov/santé depuis août 2023)</td>
+          <td><span class="pill pill-red">Absent</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>HowTo</strong></td>
+          <td>Rich results Google + structure guidée</td>
+          <td><span class="pill pill-red">Absent</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Article</strong> (+ dateModified)</td>
+          <td>Signal de fraîcheur (SEO)</td>
+          <td><span class="pill pill-red">Absent</span></td>
+          <td><span class="pill pill-red">Priorité 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>AggregateRating</strong></td>
+          <td>Rich results produit (SEO)</td>
+          <td><span class="pill pill-red">Absent</span></td>
+          <td><span class="pill pill-red">Priorité 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>LocalBusiness</strong> (par agence)</td>
+          <td>Citabilité locale</td>
+          <td><span class="pill pill-green">Présent et valide (confirmé Rich Results Test)</span></td>
+          <td><span class="pill pill-green">OK</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 Pages catégories : structure H2 questions existante — FAQPage non exploitée</div>
+      <div class="action">Implémenter FAQPage JSON-LD sur toutes les pages catégories avec sections questions</div>
+      <div class="finding-body">
+      <p>La page /panneau/panneau-contreplaque contient déjà des titres en H2 sous forme de questions : "Qu'est-ce que le panneau de bois contreplaqué ?", "Pourquoi utiliser du contreplaqué ?", "Comment choisir un panneau contreplaqué ?".</p>
+      <p>C'est exactement la structure requise pour un FAQPage schema.</p>
+      <p><strong>Point de politique Google (août 2023) :</strong> Google a restreint la génération de rich results FAQPage aux seuls sites gouvernementaux et de santé. Un site marchand comme barillet-distribution.fr n'obtiendra donc plus d'affichage enrichi dans les SERPs via ce schema. Concernant l'impact sur les LLMs, il n'existe pas de données confirmant qu'un balisage FAQPage améliore directement les chances d'être cité. C'est une bonne pratique de structuration, pas un levier GEO avéré. À traiter comme une action de maintenance à faible coût, sans en attendre de résultats mesurables à court terme.</p>
+    </div>
+      
+    </div>
+
+    <h3 class="sub">2.2 Actions techniques prioritaires</h3>
+    <ul class="priority-list">
+      <li>
+        <div class="prio-num">1</div>
+        <div class="prio-content">
+          <strong>Désactiver le JS challenge (SlowAES) pour les bots LLM officiels</strong>
+          <span>Configurer le WAF/CDN (CloudFlare ou autre) pour whitelister les IP ranges et user-agents GPTBot, ClaudeBot, PerplexityBot, Google-Extended. Sans cette action, toutes les autres optimisations GEO sont inopérantes.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">2</div>
+        <div class="prio-content">
+          <strong>Implémenter FAQPage JSON-LD sur les pages catégories à H2 questions</strong>
+          <span>Pages cibles : /panneau/panneau-contreplaque, /panneau/panneau-melamine, /panneau/panneau-mdf, /panneau/panneau-osb, /bois. Action de faible coût sur la structure existante. Aucun bénéfice garanti en SEO (rich results supprimés pour les sites marchands depuis 2023) ni en GEO — à traiter comme une bonne pratique de balisage, sans en attendre de résultats mesurables à court terme.</span>
+        </div>
+      </li>
+<li>
+        <div class="prio-num">3</div>
+        <div class="prio-content">
+          <strong>Enrichir le schema Organization</strong>
+          <span>Ajouter foundingDate (1920), numberOfEmployees, areaServed (France), sameAs (Wikipedia, Wikidata si disponibles), description complète. Signal d'autorité de marque pour les LLMs.</span>
+        </div>
+      </li>
+    </ul>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="section collapsed" id="phase3">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="phase-badge">Phase 3</div>
+      <h2>Owned Media — Juillet à Octobre 2026</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne citent pas des pages produits — ils citent des sources qui répondent aux questions de leurs utilisateurs. Cette phase identifie les sujets sur lesquels Barillet n'a aucun contenu (et donc ne peut pas être cité), et construit un plan de production priorisé par potentiel de citabilité.</p>
+    <h3 class="sub">3.1 Diagnostic du contenu existant</h3>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 Pages catégories : bon socle de questions, contenu SEO insuffisant pour être cité</div>
+      <div class="action">Enrichir les réponses H2 avec chiffres, cas d'usage concrets et signal temporel "Mis à jour 2026". Ajouter une intro courte sous le H1 et/ou un bloc éditorial en bas de page. Appliquer sur toutes les pages catégories disposant d'une structure H2 questions.</div>
+      <div class="finding-body">
+      <p>Les pages catégories (ex : /panneau/panneau-contreplaque) disposent d'une structure H2 correcte avec des questions pertinentes.</p>
+      <p>Mais le contenu des réponses est trop générique (quelques lignes sans chiffres, sans cas d'usage concrets, sans signal temporel).</p>
+      <p>Les LLMs citent des sources qui traitent les sujets en profondeur avec des données précises.</p>
+      <p>Les pages catégories ont des contraintes de template qui empêchent de placer du contenu éditorial avant les filtres produits. Les deux zones exploitables sont : (1) une introduction de 2 à 3 phrases sous le H1, et (2) un bloc éditorial de 200 à 400 mots en bas de page, sous le listing produits.</p>
+    </div>
+    </div>
+
+    <h3 class="sub">3.2 Trous sémantiques identifiés — Sujets à couvrir en priorité</h3>
+    <p class="note" style="margin-bottom:14px;"><strong>Comment ces trous ont été identifiés :</strong> croisement de trois sources — (1) les résultats du LLM Brand Tracker : quels sujets donnent 0% de mentions pour Barillet ? (2) l'analyse des fan-out queries : sur quels sous-sujets les LLMs cherchent-ils activement des sources ? (3) les données GSC : quelles requêtes informationnelles génèrent du trafic existant, sans contenu dédié côté Barillet ? L'intersection "LLM demande — Barillet n'a rien" définit la priorité.</p>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Sujet / Intent</th>
+          <th>Type de contenu</th>
+          <th>Priorité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Contreplaqué vs MDF vs aggloméré : différences et usages</strong></td>
+          <td>Guide comparatif</td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Bouleau vs peuplier vs exotique : quel contreplaqué choisir ?</strong></td>
+          <td>Comparatif produits</td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Quelle épaisseur de panneau bois pour plancher / meuble / cloison ?</strong></td>
+          <td>Guide pratique (HowTo)</td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Mélaminé vs stratifié pour agencement cuisine / dressing</strong></td>
+          <td>Comparatif + HowTo</td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>CTB-H vs CTB-X : classes d'humidité contreplaqué</strong></td>
+          <td>Guide technique</td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>MDF hydrofuge vs standard : où l'utiliser ?</strong></td>
+          <td>Guide technique</td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>OSB : usages, classes et mise en oeuvre</strong></td>
+          <td>Guide technique</td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>Comment lire une fiche technique panneau bois (choix, certification PEFC/FSC) ?</strong></td>
+          <td>Guide expert</td>
+          <td><span class="pill pill-green">Différenciant</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub">3.3 Analyse des fan-out queries — Cartographie des gaps GEO</h3>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 Qu'est-ce qu'une fan-out query — et comment l'utiliser sans sur-optimiser ?</div>
+      <div class="finding-body">
+      <p>Lorsqu'un LLM reçoit un prompt utilisateur, il génère en interne une série de sous-requêtes pour aller chercher l'information nécessaire à sa réponse. Ces sous-requêtes ("fan-out queries") révèlent les sujets sur lesquels les LLMs cherchent des sources — et donc les thématiques à couvrir en priorité.</p>
+      <p>Attention : Google avertit dans son guide GEO officiel (mai 2026) contre la création de pages dédiées à "chaque variation de fan-out query" dans le but de manipuler les réponses IA. Cette pratique peut être assimilée à du scaled content abuse. L'objectif n'est pas de cibler mécaniquement chaque sous-requête, mais d'identifier les sujets pour lesquels Barillet n'a pas de contenu utile — et d'en créer parce que les visiteurs en ont besoin.</p>
+      <p>Les données ci-dessous sont extraites du LLM Brand Tracker Barillet (panel 30 prompts, modèle Gemini) et servent de boussole thématique, pas de liste de pages à créer une par une.</p>
+      </div>
+    </div>
+
+    <h4 style="font-size:14px;font-weight:600;color:var(--text-light);margin:24px 0 12px;">Top 15 fan-out queries — Volume de déclenchement sur le panel</h4>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Fan-out query</th>
+          <th>Volume</th>
+          <th>Page Barillet existante</th>
+          <th>Gap GEO</th>
+          <th>Priorité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>grossiste bois terrasse composite exotique</strong></td>
+          <td>17</td>
+          <td>Partiel (/terrasse-composite + /terrasse-bois-exotique)</td>
+          <td>Pas de page hub comparatif composite vs exotique. Pas de guide achat.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>grossiste contreplaqué okoumé peuplier</strong></td>
+          <td>13</td>
+          <td>Oui (/contreplaque-okoume + /contreplaque-peuplier)</td>
+          <td>Pas de contenu comparatif "okoumé vs peuplier : lequel choisir ?". Angle guide absent.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>fournisseur panneaux mélaminés sur mesure France</strong></td>
+          <td>10</td>
+          <td>Partiel (/panneau-melamine)</td>
+          <td>Zéro contenu sur la découpe / le sur mesure. Angle service absent du site.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>distributeur Fundermax Trespa façade extérieure</strong></td>
+          <td>10</td>
+          <td>Partiel (/panneau-de-facade-compact)</td>
+          <td>Pas de page marque Fundermax / Trespa. Terme "HPL" absent du sitemap. Pas de guide façade HPL.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>fournisseur contreplaqué marine professionnel France</strong></td>
+          <td>8</td>
+          <td>Oui (/contreplaque-marine)</td>
+          <td>Page existe mais contenu insuffisant. Pas d'article sur les normes EN 314 / usages marine.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>négoce bois livraison chantier</strong></td>
+          <td>7</td>
+          <td>Non (/services existe mais ne répond pas)</td>
+          <td>Pas de page "commande pro / livraison chantier". Thème clé pour la confiance LLM sur requêtes commerciales.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>acheter plan de travail sur mesure France</strong></td>
+          <td>7</td>
+          <td>Partiel (/plan-de-travail avec 3 sous-catégories)</td>
+          <td>Pas de contenu éditorial "comment choisir son plan de travail". Angle sur mesure absent.</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>distributeur panneaux stratifiés HPL France</strong></td>
+          <td>7</td>
+          <td>Partiel (/panneau-stratifie et /panneau-compact)</td>
+          <td>Le terme HPL est absent du sitemap. Pas de guide "stratifié vs HPL vs compact".</td>
+          <td><span class="pill pill-red">Haute</span></td>
+        </tr>
+        <tr>
+          <td><strong>distributeur Egger Polyrey panneaux France</strong></td>
+          <td>6</td>
+          <td>Non (/marques/ existe, pas de pages marque)</td>
+          <td>Pages marques absentes. Les LLMs cherchent des distributeurs officiels de marques précises.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+        <tr>
+          <td><strong>distributeur panneaux façade rénovation extérieure</strong></td>
+          <td>6</td>
+          <td>Partiel (/bardage-et-facade/panneau-de-facade)</td>
+          <td>Pas de contenu "rénovation façade extérieure : quel panneau choisir ?". Angle rénovation absent.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+        <tr>
+          <td><strong>grossiste matériaux construction OSB</strong></td>
+          <td>5</td>
+          <td>Partiel (/panneau/osb/panneau-osb)</td>
+          <td>Pas de guide "OSB : quelle épaisseur pour quel usage ?". Pas de comparatif CTBX / OSB / LVL.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+        <tr>
+          <td><strong>fournisseurs agencement intérieur MDF mélaminé stratifié</strong></td>
+          <td>5</td>
+          <td>Partiel (pages catégories)</td>
+          <td>Pas de page hub "agencement intérieur : panneaux pour cuisinistes et agenceurs". Verticale métier absente.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+        <tr>
+          <td><strong>bardage claire-voie professionnel France</strong></td>
+          <td>4</td>
+          <td>Non (terme "claire-voie" absent du sitemap)</td>
+          <td>Sous-catégorie claire-voie à créer ou contenu dédié dans /bardage-et-facade/bardage.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+        <tr>
+          <td><strong>fournisseur panneaux fibre-ciment façade France</strong></td>
+          <td>4</td>
+          <td>Non (/panneau/bois-ciment ≠ fibre-ciment façade)</td>
+          <td>Fibre-ciment façade (Eternit, Cedral, Equitone) = catégorie à vérifier dans l'offre Barillet. Si distribué, page dédiée obligatoire.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+        <tr>
+          <td><strong>fournisseur bois agencement magasin France</strong></td>
+          <td>4</td>
+          <td>Non (pas de verticale "agencement commercial")</td>
+          <td>Verticale métier "agencement de commerce" absente. Les LLMs cherchent des sources par type de projet professionnel.</td>
+          <td><span class="pill pill-amber">Moyenne</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="finding critical">
+      <div class="finding-title">🔴 Enseignement clé : Barillet est invisible sur les queries commerciales à plus forte intention d'achat</div>
+      <div class="action">Créer une page "Commande professionnelle : livraison chantier et découpe sur mesure" qui répond explicitement aux queries "fournisseur + produit + France". Cette page doit mettre en avant les capacités opérationnelles de Barillet, pas seulement le catalogue produit. Balisage Organization + Service JSON-LD recommandé.</div>
+      <div class="finding-body">
+      <p>Les fan-out queries les plus volumineuses sont toutes des requêtes de type "fournisseur / grossiste / distributeur + produit + France".</p>
+      <p>Ces requêtes signalent une intention d'achat professionnelle forte.</p>
+      <p>Or le site n'a pas de contenu qui répond à ces formulations : les pages catégories sont pensées pour le référencement produit, pas pour rassurer un acheteur professionnel sur la capacité de Barillet à honorer une commande en volume, livrer sur chantier, ou accompagner un projet.</p>
+      <p>Le travail de contenu doit adresser cette dimension "fournisseur de confiance" en plus de la dimension technique produit.</p>
+    </div>
+    </div>
+
+    <h3 class="sub">3.4 Plan de création de contenu — Recommandations</h3>
+
+    <div class="finding ok">
+      <div class="finding-title">🟢 Approche recommandée : contenus utiles, experts, non génériques</div>
+      <div class="finding-body">
+      <p>Plutôt que de créer des articles courts et mono-intent, chaque page devrait couvrir un sujet en profondeur avec un angle expert (définition, différences, comment choisir, cas d'usage, données chiffrées).</p>
+      <p>Une page qui répond à plusieurs angles d'un même sujet a plus de chances d'être pertinente sur un plus large spectre de requêtes — ce qui est valable aussi bien pour le SEO classique que pour les expériences IA.</p>
+      <p>La longueur est secondaire — Google dit qu'il n'y a pas de longueur idéale. Ce qui compte : que le contenu apporte une perspective experte que l'IA ne pourrait pas reconstruire seule à partir de sources génériques. Signal temporel explicite en introduction conseillé.</p>
+    </div>
+    </div>
+
+    <ul class="priority-list">
+      <li>
+        <div class="prio-num">1</div>
+        <div class="prio-content">
+          <strong>Créer le guide "Contreplaqué, MDF, aggloméré, OSB : comment choisir son panneau bois ?"</strong>
+          <span>Article de fond 2 500 mots minimum. Couvre : définitions, tableau comparatif, cas d'usage par type de projet, épaisseurs recommandées, certifications. Production via Thot SEO pour garantir le score sémantique. Format cible : Article JSON-LD avec datePublished + dateModified.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">2</div>
+        <div class="prio-content">
+          <strong>Créer la page "Contreplaqué bouleau, peuplier, exotique : guide de choix"</strong>
+          <span>Comparatif multi-intent : résistance mécanique par essence, densité, aptitude à la finition, prix relatifs (en ordres de grandeur). Inclure un tableau comparatif. Cible de citation sur les prompts "bouleau vs peuplier" et "quel contreplaqué menuiserie".</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">3</div>
+        <div class="prio-content">
+          <strong>Créer le guide "Classes d'humidité CTB-H, CTB-X : quel contreplaqué pour l'extérieur ?"</strong>
+          <span>Sujet technique peu couvert par les concurrents : opportunité de positionnement expert. Inclure les normes EN 636, les conditions d'emploi, les traitements recommandés.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">4</div>
+        <div class="prio-content">
+          <strong>Créer les guides HowTo : "Comment choisir l'épaisseur de son panneau bois ?"</strong>
+          <span>Format step-by-step balisé en HowTo schema (+24% citations). Couvre plancher, meuble, cloison, habillage. Cas concrets avec dimensions standards en mm.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">5</div>
+        <div class="prio-content">
+          <strong>Créer le guide "Terrasse bois composite vs exotique : comment choisir ?" — fan-out vol. 17</strong>
+          <span>Page hub qui répond à la fan-out query la plus volumineuse du panel. Structure multi-intent : comparatif durabilité (25-30 ans composite vs 20-25 ans exotique classe 4), entretien, coût total sur 10 ans, mise en oeuvre. Maillage interne vers /terrasse-composite, /terrasse-bois-exotique, /lambourde-exotique et /lambourde-composite. Signal "Mis à jour en 2026" obligatoire.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">6</div>
+        <div class="prio-content">
+          <strong>Créer le guide "Panneaux HPL et stratifiés compacts pour façade et agencement" — fan-out vol. 7-10</strong>
+          <span>Le terme HPL est aujourd'hui absent du sitemap Barillet alors qu'il génère 7 à 10 fan-out queries. Créer une page hub couvrant : HPL vs stratifié standard vs compact, marques distribuées (Fundermax, Trespa, Egger, Polyrey si applicables), usages façade vs agencement intérieur, résistances normatives. Ce contenu répond simultanément aux queries "distributeur HPL France", "Fundermax distributeur" et "stratifié décoratif agencement".</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">7</div>
+        <div class="prio-content">
+          <strong>Créer une page "Commande professionnelle : livraison chantier et découpe sur mesure" — fan-out vol. 7</strong>
+          <span>Les LLMs cherchent des "fournisseurs" capables de livrer sur chantier et de découper à la commande. Cette page n'est pas un article de blog mais une page de service commerciale : délais, conditions de commande pro, service de découpe panneaux, livraison mensuelle sur site. Baliser en Organization + Service JSON-LD. C'est le contenu qui fera passer Barillet de "site e-commerce" à "fournisseur professionnel" dans les réponses LLM.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">8</div>
+        <div class="prio-content">
+          <strong>Créer le guide "Plan de travail sur mesure : bois, stratifié ou compact ?" — fan-out vol. 7</strong>
+          <span>Barillet dispose de 3 sous-catégories plans de travail mais aucun contenu éditorial ne les accompagne. Article multi-intent : comparatif des matériaux, résistances aux chocs et à l'humidité, usages cuisine / atelier / bureau, formats disponibles sur commande. Cible les prompts "plan de travail sur mesure menuisier" et "fournisseur plan de travail professionnel France".</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">9</div>
+        <div class="prio-content">
+          <strong>Créer le guide "Contreplaqué marine : normes, usages et comment le choisir ?" — fan-out vol. 8</strong>
+          <span>La page /contreplaque-marine existe mais est trop légère pour être citée. Enrichir ou créer un article dédié : définition contreplaqué marine, norme EN 314-2 classe 3 / BS 1088, essences (okoumé, peuplier), épaisseurs standards, différences avec CTB-X, applications (bateaux, aménagements humides, mobilier). Format Article JSON-LD avec dateModified.</span>
+        </div>
+      </li>
+    </ul>
+
+    <h3 class="sub">3.5 Calendrier éditorial — Juillet à Octobre 2026</h3>
+    <p class="note" style="margin-bottom:14px;">Rythme : 1 contenu par semaine. Pause en août pour aligner avec les contraintes internes de production. Départ au <strong>01/07/2026</strong>. Chaque contenu est produit dans Thot SEO avec score sémantique cible ≥ 80. Les dates sont indicatives et peuvent être décalées d'une semaine selon les validations internes.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width:110px;">Semaine</th>
+          <th style="width:80px;">Date</th>
+          <th>Contenu à produire</th>
+          <th style="width:90px;">Priorité</th>
+          <th style="width:120px;">Fan-out vol.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>S1</strong></td>
+          <td>01/07/2026</td>
+          <td>Guide comparatif — <strong>"Contreplaqué, MDF, aggloméré, OSB : comment choisir son panneau bois ?"</strong><br><span style="font-size:12px;color:#888;">2 500 mots · Article JSON-LD · Socle citabilité LLM</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+          <td>Transversal</td>
+        </tr>
+        <tr>
+          <td><strong>S2</strong></td>
+          <td>08/07/2026</td>
+          <td>Comparatif essences — <strong>"Contreplaqué bouleau, peuplier, okoumé, exotique : guide de choix"</strong><br><span style="font-size:12px;color:#888;">Tableau comparatif · résistance, densité, finition, prix relatifs</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+          <td>13 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S3</strong></td>
+          <td>15/07/2026</td>
+          <td>Guide technique — <strong>"CTB-H, CTB-X : classes d'humidité contreplaqué pour l'extérieur"</strong><br><span style="font-size:12px;color:#888;">Normes EN 636 · traitements · conditions d'emploi</span></td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+          <td>7 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S4</strong></td>
+          <td>22/07/2026</td>
+          <td>Guide HowTo — <strong>"Quelle épaisseur de panneau bois pour plancher, meuble ou cloison ?"</strong><br><span style="font-size:12px;color:#888;">Format HowTo JSON-LD · cas concrets par usage · dimensions standards</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+          <td>10 fan-out</td>
+        </tr>
+        <tr style="background:#fef9ec;">
+          <td colspan="5" style="text-align:center;font-size:12px;font-weight:600;color:#888;padding:10px;">⏸ Pause production — Août 2026 (01/08 → 31/08)</td>
+        </tr>
+        <tr>
+          <td><strong>S5</strong></td>
+          <td>01/09/2026</td>
+          <td>Guide hub — <strong>"Terrasse bois : composite vs exotique — comparatif durabilité, entretien, coût"</strong><br><span style="font-size:12px;color:#888;">Page hub · maillage terrasse composite + exotique + lambourdes</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+          <td>17 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S6</strong></td>
+          <td>08/09/2026</td>
+          <td>Guide technique — <strong>"Panneaux HPL et stratifiés compacts pour façade et agencement"</strong><br><span style="font-size:12px;color:#888;">HPL vs stratifié · Fundermax / Trespa · usages façade + intérieur</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+          <td>7–10 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S7</strong></td>
+          <td>15/09/2026</td>
+          <td>Page service — <strong>"Commande professionnelle : livraison chantier et découpe sur mesure"</strong><br><span style="font-size:12px;color:#888;">Organization + Service JSON-LD · page commerciale, pas article</span></td>
+          <td><span class="pill pill-red">Priorité 1</span></td>
+          <td>7 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S8</strong></td>
+          <td>22/09/2026</td>
+          <td>Guide choix — <strong>"Plan de travail sur mesure : bois, stratifié ou compact ?"</strong><br><span style="font-size:12px;color:#888;">Multi-intent · résistances par matériau · usages cuisine/atelier/bureau</span></td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+          <td>7 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S9</strong></td>
+          <td>29/09/2026</td>
+          <td>Guide expert — <strong>"Contreplaqué marine : normes EN 314-2 / BS 1088, essences et usages"</strong><br><span style="font-size:12px;color:#888;">Article JSON-LD · dateModified · enrichissement page existante</span></td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+          <td>8 fan-out</td>
+        </tr>
+        <tr>
+          <td><strong>S10</strong></td>
+          <td>06/10/2026</td>
+          <td>Guide technique — <strong>"MDF hydrofuge vs standard : où l'utiliser ? OSB : classes et mise en oeuvre"</strong><br><span style="font-size:12px;color:#888;">Peut être scindé en 2 articles si volume suffisant</span></td>
+          <td><span class="pill pill-amber">Priorité 2</span></td>
+          <td>5 fan-out</td>
+        </tr>
+      </tbody>
+    </table>
+
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="section collapsed" id="phase4">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="phase-badge">Phase 4</div>
+      <h2>Earned Media — Mois 2 à 6</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne se basent pas uniquement sur le site de Barillet — ils agrègent des milliers de sources tierces. Si d'autres sites parlent de Barillet (forums pros, articles de fond, annuaires sectoriels), ces mentions alimentent directement les réponses IA. Cette phase cartographie les sources à travailler en priorité pour construire cette présence externe.</p>
+    <h3 class="sub">4.1 Sources que les LLMs utilisent sur la thématique bois/panneaux</h3>
+    <p class="note" style="margin-bottom:14px;">Ces domaines sont les cibles prioritaires pour le netlinking et les relations presse. Une mention ou un backlink depuis ces sources augmente directement les chances d'être cité par les LLMs.</p>
+
+    <div style="background:#f9f5ff;border:1px solid #ddd;border-radius:10px;padding:20px 24px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0A3856;margin-bottom:12px;">Budget — Netlinking &amp; earned media (6 mois)</div>
+
+      <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #dde3ee;border-radius:8px;padding:12px 16px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#0A3856;">103</div>
+          <div style="font-size:11px;color:#666;margin-top:2px;">domaines identifiés<br>sur 2 884 analysés</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #dde3ee;border-radius:8px;padding:12px 16px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#0A3856;">1 067 €</div>
+          <div style="font-size:11px;color:#666;margin-top:2px;">prix moyen<br>du lien (plateforme)</div>
+        </div>
+        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #dde3ee;border-radius:8px;padding:12px 16px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#888;">139 k€ – 226 k€</div>
+          <div style="font-size:11px;color:#666;margin-top:2px;">budget si achat<br>des 103 liens</div>
+        </div>
+      </div>
+
+      <p class="note" style="margin-bottom:12px;">Source : export <strong>Linkfinder</strong> des domaines identifiés par le LLM Brand Tracker (2 884 sources citant les concurrents sur la thématique bois/panneaux). <strong>103 d'entre eux sont négociables sur la plateforme.</strong> Prix relevés au 27/05/2026. L'objectif n'est pas d'acheter les 103 liens — mais de cibler en priorité les domaines thématiquement proches de Barillet, qui sont déjà actifs dans les corpus LLM.</p>
+
+      <p style="font-size:13px;font-weight:600;color:#0A3856;margin:0 0 8px;">Sources prioritaires — bois, construction, habitat (sélection Linkfinder)</p>
+      <table class="data-table" style="margin-bottom:16px;">
+        <thead>
+          <tr><th>Domaine</th><th>Prix Linkfinder</th><th>TF</th><th>Pertinence GEO</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>favrat-ossature-bois.fr</td><td><strong>53 €</strong></td><td>32</td><td>Ossature bois — pertinence directe produit</td></tr>
+          <tr><td>meilleur-plan-cuisine.fr</td><td><strong>97 €</strong></td><td>17</td><td>Plan de travail sur mesure — requête prioritaire Barillet</td></tr>
+          <tr><td>lairdubois.fr</td><td><strong>152 €</strong></td><td>15</td><td>Communauté ébénistes/menuiserie — forte indexation LLM</td></tr>
+          <tr><td>batipole.com</td><td><strong>195 €</strong></td><td>41</td><td>Actualités BTP/habitat — autorité sectorielle élevée</td></tr>
+          <tr><td>architecturebois.fr</td><td><strong>269 €</strong></td><td>40</td><td>Architecture bois — fort TF, corpus LLM architecture</td></tr>
+          <tr><td>batirama.com</td><td><strong>435 €</strong></td><td>26</td><td>Média BTP de référence — actif dans les réponses LLM</td></tr>
+          <tr><td>lemarchedubois.com</td><td><strong>638 €</strong></td><td>15</td><td>Marché du bois — signal sectoriel direct</td></tr>
+          <tr><td>lemoniteur.fr</td><td><strong>1 074 €</strong></td><td>25</td><td>Presse BTP — signal d'autorité sectorielle majeure</td></tr>
+          <tr><td>batiweb.com</td><td><strong>1 210 €</strong></td><td>44</td><td>Référence BTP France — citation forte dans les modèles</td></tr>
+          <tr><td>batiactu.com</td><td><strong>1 692 €</strong></td><td>28</td><td>Actualités construction — très actif dans les corpus LLM</td></tr>
+        </tbody>
+      </table>
+
+      <p style="font-size:13px;font-weight:600;color:#0A3856;margin:0 0 8px;">Scénarios budget sur 6 mois</p>
+      <table class="data-table" style="margin-bottom:0;">
+        <thead>
+          <tr><th>Scénario</th><th>Sources cibles</th><th>Nb liens</th><th>Budget HT</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Démarrage — bois/BTP accessibles</strong></td>
+            <td>favrat-ossature-bois.fr, meilleur-plan-cuisine.fr, lairdubois.fr, batipole.com, architecturebois.fr</td>
+            <td>5 liens</td>
+            <td><strong>1 050 € HT</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Intermédiaire — bois + médias BTP</strong></td>
+            <td>Scénario démarrage + batirama.com + lemarchedubois.com</td>
+            <td>7 liens</td>
+            <td><strong>2 120 € HT</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Complet — avec média référent (M4-M6)</strong></td>
+            <td>Scénario intermédiaire + lemoniteur.fr ou batiweb.com</td>
+            <td>8 liens</td>
+            <td><strong>3 200 – 3 330 € HT</strong></td>
+          </tr>
+          <tr style="background:#fff8ed;">
+            <td><strong>Exhaustif — 103 liens plateforme</strong> <span style="font-weight:400;font-size:11px;color:#888;">(ordre de grandeur)</span></td>
+            <td>Ensemble des domaines disponibles sur Linkfinder</td>
+            <td>103 liens</td>
+            <td><strong>139 000 – 226 000 € HT</strong></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:10px;font-size:12px;color:#888;">⚠ Prix Linkfinder relevés au 27/05/2026 — peuvent varier. Les mentions via forums (lairdubois.fr, lamortaise.com) et tribunes thématiques sont gratuites et restent la source GEO à plus fort ROI. Le netlinking payant est un accélérateur, pas un substitut à la stratégie de contenu.</p>
+    </div>
+
+        <div class="finding ok" style="margin-bottom:16px;">
+      <div class="finding-title">✅ Stratégie : obtenir des mentions sur ces sources = augmenter directement les citations LLM</div>
+      <div class="finding-body">
+      <p>Les LLMs apprennent qui est Barillet en lisant ce que d'autres sites disent de Barillet. Une mention sur lairdubois.fr ou lamortaise.com a plus de valeur GEO qu'un backlink SEO classique, parce que ces forums sont activement indexés dans les corpus d'entraînement des modèles.</p>
+      <p>Action prioritaire : vérifier la présence de Barillet sur chacune de ces sources, puis lancer des actions ciblées pour obtenir des mentions naturelles (voir 4.2 et 4.3).</p>
+      </div>
+    </div>
+    <div class="source-grid">
+      <div class="source-card">
+        <div class="domain">lairdubois.fr</div>
+        <div class="source-type">Communauté professionnelle menuiserie</div>
+        <div class="relevance red">Priorité 1</div>
+      </div>
+
+      <div class="source-card">
+        <div class="domain">lamortaise.com</div>
+        <div class="source-type">Forum ébénisterie professionnels</div>
+        <div class="relevance red">Priorité 1</div>
+      </div>
+      <div class="source-card">
+        <div class="domain">copaindescopeaux.fr</div>
+        <div class="source-type">Forum bois passionnés/pros</div>
+        <div class="relevance amber">Priorité 2</div>
+      </div>
+
+
+
+      <div class="source-card">
+        <div class="domain">renovation-habitat.info</div>
+        <div class="source-type">Média rénovation (a déjà cité Barillet)</div>
+        <div class="relevance green">Déjà présent — entretenir</div>
+      </div>
+      <div class="source-card">
+        <div class="domain">lecommercedubois.org</div>
+        <div class="source-type">Annuaire professionnel sectoriel</div>
+        <div class="relevance amber">Priorité 2</div>
+      </div>
+      <div class="source-card">
+        <div class="domain">siage.co</div>
+        <div class="source-type">Guide bois et dérivés</div>
+        <div class="relevance" style="color:#888">Priorité 3</div>
+      </div>
+    </div>
+
+    <h3 class="sub">4.2 Stratégie forums (lairdubois.fr, lamortaise.com, copaindescopeaux.fr)</h3>
+
+    <div class="finding warning">
+      <div class="finding-title">🟡 Barillet absent de tous les forums professionnels du bois</div>
+      <div class="action">Développer une présence éditoriale authentique sur lairdubois.fr, lamortaise.com et copaindescopeaux.fr. L'objectif est de contribuer réellement à la communauté, pas d'acquérir des mentions. Google indique explicitement que les mentions inauthentiques n'apportent pas de valeur GEO et peuvent être détectées par ses systèmes anti-spam.</div>
+      <div class="finding-body">
+      <p>Aucune mention de Barillet Distribution sur lairdubois.fr, lamortaise.com ou copaindescopeaux.fr dans les discussions sur les panneaux et fournisseurs. C'est à la fois un problème de visibilité LLM et un signal de faible notoriété communautaire.</p>
+      <p><strong>Étape 1 (M2-M3) :</strong> Identifier les 10 à 15 threads actifs sur les sujets couverts (choix de panneaux, fournisseurs, livraison pro). Observer sans intervenir. Repérer les questions sans réponse satisfaisante.</p>
+      <p><strong>Étape 2 (M3-M4) :</strong> Répondre avec un contenu expert et factuel sur 3 à 5 threads identifiés. Ne pas mentionner Barillet dans un premier post. Construire la crédibilité avant de se positionner comme fournisseur.</p>
+      <p><strong>Étape 3 (M4-M6) :</strong> Sur des threads où la mention est naturelle (délais, stock, livraison chantier, prix par volume), glisser une référence à Barillet comme exemple concret de solution. Une mention dans un fil de discussion populaire peut se retrouver citée dans les réponses LLM pendant plusieurs mois.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">4.3 Listicles tiers à intégrer</h3>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Page / Article</th>
+          <th>Domaine</th>
+          <th>Barillet cité ?</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>"Fournisseurs bois France — annuaire complet"</td>
+          <td>lecommercedubois.org</td>
+          <td><span class="pill pill-amber">À vérifier</span></td>
+          <td>Outreach pour inscription si absent</td>
+        </tr>
+        <tr>
+          <td>"Meilleur négoce bois en ligne pour menuisier"</td>
+          <td>Blogs spécialisés / médias bâtiment</td>
+          <td><span class="pill pill-red">Non</span></td>
+          <td>Créer ou obtenir mentions dans ces roundups</td>
+        </tr>
+        <tr>
+          <td>"Distributeurs contreplaqué bouleau professionnels"</td>
+          <td>Articles comparatifs</td>
+          <td><span class="pill pill-red">Non</span></td>
+          <td>Fournir données différenciantes aux éditeurs</td>
+        </tr>
+        <tr>
+          <td>Wikipedia "Groupe Barillet" ou "Négoce bois France"</td>
+          <td>wikipedia.org</td>
+          <td><span class="pill pill-red">Absent</span></td>
+          <td>Créer ou contribuer à une fiche (signal d'autorité fort)</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="section collapsed" id="phase5">
+    <div class="section-header" onclick="toggleSection(this)">
+      <div class="phase-badge">Phase 5</div>
+      <h2>Pilotage — Plan mensuel de suivi</h2>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-body">
+    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Le GEO est un travail de moyen terme — les effets se mesurent sur plusieurs mois, pas en quelques semaines. Cette phase installe les indicateurs de suivi pour piloter la progression mois par mois, identifier ce qui fonctionne, et ajuster la stratégie en fonction des données réelles plutôt que d'hypothèses.</p>
+    <div class="kpi-section">
+      <h4>Mensuel — LLM Brand Tracker</h4>
+      <table class="data-table">
+        <thead>
+          <tr><th>KPI</th><th>Baseline (M0)</th><th>Cible M3</th><th>Cible M6</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Taux de citation moyen (panel 30 prompts)</td><td>4,5% (M0 mai 2026)</td><td>5–6%</td><td>6–8%</td></tr>
+          <tr><td>Nombre de prompts avec citation &gt; 10%</td><td>5/30 (M0 mai 2026)</td><td>6/30</td><td>8/30</td></tr>
+          <tr><td>Sources citées par les LLMs incluant barillet-distribution.fr</td><td>0</td><td>1</td><td>3+</td></tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:10px;">⚠ Ces cibles sont des ordres de grandeur, pas des engagements de performance. Elles supposent une base de prompts stable sur les deux plateformes (ChatGPT + Gemini) et la production effective des contenus identifiés. En GEO, les variables sont nombreuses : mises à jour des modèles, changements d'algorithme, comportement des concurrents. Viser 6 à 8% à M6 reste ambitieux — c'est déjà un doublement de la présence actuelle.</p>
+    </div>
+
+    <div class="kpi-section">
+      <h4>Mensuel — GA4</h4>
+      <table class="data-table">
+        <thead>
+          <tr><th>KPI</th><th>Comment l'isoler</th><th>Objectif</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Trafic entrant depuis LLMs</td><td>Segments user-agent (ChatGPT-User, PerplexityBot) + referrers perplexity.ai, chat.openai.com</td><td>Mesurer la croissance absolue</td></tr>
+          <tr><td>Taux de conversion trafic LLM</td><td>Entonnoir GA4 isolé</td><td>Valider la qualité du trafic IA</td></tr>
+          <tr><td>Pages d'entrée depuis LLMs</td><td>Rapport pages de destination segmenté</td><td>Identifier les contenus qui convertissent</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="kpi-section">
+      <h4>Mensuel — Microsoft Clarity Citations <span style="font-size:11px;font-weight:400;color:#2d7a4f;background:#e6f4ec;border-radius:4px;padding:2px 7px;margin-left:8px;">Disponible depuis le 13/05/2026</span></h4>
+      <p class="note" style="margin-bottom:12px;">Microsoft Clarity propose depuis mai 2026 un tableau de bord natif <strong>AI Visibility → Citations</strong>, gratuit, qui mesure directement la présence de barillet-distribution.fr dans les réponses générées par <strong>Bing Copilot</strong>. Prérequis : code de tracking Clarity installé sur le site + vérification de domaine via Bing Webmaster Tools ou GSC.</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>KPI Clarity</th><th>Ce que ça mesure</th><th>Baseline M0</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Page citations</strong></td>
+            <td>Nombre de fois où une page du site est citée dans une réponse Bing Copilot</td>
+            <td>À mesurer</td>
+          </tr>
+          <tr>
+            <td><strong>Share of Authority (SoA)</strong></td>
+            <td>Part de visibilité IA du domaine vs concurrents sur les requêtes suivies</td>
+            <td>À mesurer</td>
+          </tr>
+          <tr>
+            <td><strong>Trafic AI referral</strong></td>
+            <td>Sessions entrantes depuis Bing Copilot</td>
+            <td>0 (non mesuré)</td>
+          </tr>
+          <tr>
+            <td><strong>Grounding queries</strong></td>
+            <td>Requêtes pour lesquelles le domaine est utilisé comme source de vérification par Bing Copilot</td>
+            <td>À mesurer</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:10px;"><strong>Accès :</strong> Clarity Dashboard → <em>AI Visibility</em> → <em>Citations</em>. Outil 100% gratuit. Source : <a href="https://clarity.microsoft.com/blog/citations-now-generally-available/" target="_blank" style="color:#0A3856;">clarity.microsoft.com/blog/citations-now-generally-available</a></p>
+    </div>
+
+    <div class="kpi-section">
+      <h4>Tous les 6 mois — Audit freshness</h4>
+    </div>
+    <div class="finding ok">
+      <div class="finding-title">🟢 Protocole de mise à jour des contenus piliers</div>
+      <div class="finding-body">
+      <p>Passer en revue les guides créés.</p>
+      <p>Mettre à jour les chiffres (prix en ordres de grandeur, données de marché), les références normatives (EN 636, PEFC), et les captures d'écran si applicables.</p>
+      <p>Rafraîchir le signal temporel dans le corps du texte ("Données vérifiées en 2026").</p>
+      <p>Mettre à jour le champ <code>dateModified</code> dans le JSON-LD Article.</p>
+      <p>Le freshness bias récompense les vraies mises à jour — changer uniquement la date sans modifier le contenu n'a pas d'effet.</p>
+    </div>
+    </div>
+
+    <h3 class="sub">Roadmap récapitulative</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Période</th><th>Actions</th><th>Impact attendu</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>S1 (urgent)</strong></td>
+          <td>Audit WAF Cloudflare : vérifier et whitelister GPTBot, ClaudeBot, PerplexityBot, Gemini-bot. Implémenter FAQPage JSON-LD sur pages catégories.</td>
+          <td>Sécuriser l'accessibilité des bots LLM — prérequis aux autres actions</td>
+        </tr>
+        <tr>
+          <td><strong>S2-S4</strong></td>
+          <td>Enrichir Organization. Ajouter availability sur Product. Optimiser textes SEO pages piliers : intro H1 + bloc éditorial bas de page.</td>
+          <td>Amélioration crawl + signal de qualité</td>
+        </tr>
+        <tr>
+          <td><strong>M2-M3</strong></td>
+          <td>Créer guide "Choisir son panneau bois" (2 500 mots). Créer guide "Contreplaqué par essence (okoumé / peuplier / bouleau)". Créer page service "Commande pro &amp; livraison chantier". Lancer panel LLM Brand Tracker.</td>
+          <td>Premiers contenus citables sur fan-out queries à fort volume — début de visibilité</td>
+        </tr>
+        <tr>
+          <td><strong>M3-M4</strong></td>
+          <td>Guides CTB-H/CTB-X + HowTo épaisseurs. Guide "Terrasse composite vs exotique". Guide "HPL &amp; panneaux de façade : distributeur France". Guide "Plan de travail sur mesure". Outreach forums (lairdubois, lamortaise). Inscription lecommercedubois.org.</td>
+          <td>Couverture des 8 fan-out queries prioritaires + earned media</td>
+        </tr>
+        <tr>
+          <td><strong>M4-M5</strong></td>
+          <td>Guide "Contreplaqué marine : normes et usages". Contenu bardage claire-voie. Page marques Egger / Polyrey si distribués. Listicles tiers. Stratégie YouTube.</td>
+          <td>Extension couverture thématique + signaux d'autorité</td>
+        </tr>
+        <tr>
+          <td><strong>M5-M6</strong></td>
+          <td>Verticales métiers : "agencement intérieur" et "agencement commercial". Vérification fibre-ciment façade dans l'offre. Mentions forums avec nom de marque.</td>
+          <td>Montée en part de voix LLM sur requêtes professionnelles</td>
+        </tr>
+        <tr>
+          <td><strong>M6+</strong></td>
+          <td>Audit freshness. Relecture LLM Brand Tracker. Analyse nouvelles fan-out queries émergentes. Ajustement roadmap contenu en conséquence.</td>
+          <td>Consolidation et optimisation continue</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  Audit réalisé par Empirik — Mai 2026 · barillet-distribution.fr · Confidentiel
+</div>
+
+<script>
+  function toggleSection(header) {
+    var section = header.closest('.section');
+    if (section) {
+      section.classList.toggle('collapsed');
+    }
+  }
+</script>
+</body>
+</html>
