@@ -537,6 +537,31 @@
   .section.collapsed .section-body {
     display: none;
   }
+
+  /* BADGES D'ACTION */
+  .action-who {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 8px;
+    margin-right: 6px;
+  }
+  .action-barillet {
+    background: #fff0e8;
+    color: #C0420A;
+    border: 1px solid #E9540D;
+  }
+  .action-conjoint {
+    background: #e8f0f8;
+    color: #0A3856;
+    border: 1px solid #0A3856;
+  }
 </style>
 </head>
 <body>
@@ -663,7 +688,7 @@
           <div class="prio-num">1</div>
           <div class="prio-content">
             <strong>Vérifier et compléter la whitelist WAF Cloudflare pour les bots LLM</strong>
-            <div class="prio-action">→ Demander à l'équipe technique un audit des règles WAF Cloudflare. Confirmer que GPTBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot et Gemini-bot bypassent le JS challenge. Si absent, ajouter ces user-agents en règle d'exception — opération de configuration sans impact sur les visiteurs humains.</div>
+            <div class="prio-action"><span class="action-who action-barillet">✓ Action Barillet</span>→ Demander à l'équipe technique un audit des règles WAF Cloudflare. Confirmer que GPTBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot et Gemini-bot bypassent le JS challenge. Si absent, ajouter ces user-agents en règle d'exception — opération de configuration sans impact sur les visiteurs humains.</div>
             <span>Googlebot et Bingbot sont déjà whitelistés (confirmé). Les bots LLM, plus récents, ne figurent probablement pas dans les règles d'origine. Sans cette action, toutes les autres optimisations GEO sont inopérantes — les LLMs ne peuvent pas lire le site.</span>
           </div>
         </li>
@@ -671,7 +696,7 @@
           <div class="prio-num">2</div>
           <div class="prio-content">
             <strong>Créer du contenu sur les sujets à 0% de citations LLM</strong>
-            <div class="prio-action">→ Priorités immédiates (contenu à créer en M2-M3) : guide terrasse composite vs exotique · guide HPL façade et panneaux compacts · page service "commande pro / livraison chantier" · guide plan de travail sur mesure · guide contreplaqué marine. Voir section 3.4 pour le cahier des charges de chaque contenu.</div>
+            <div class="prio-action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>→ Priorités immédiates (contenu à créer en M2-M3) : guide terrasse composite vs exotique · guide HPL façade et panneaux compacts · page service "commande pro / livraison chantier" · guide plan de travail sur mesure · guide contreplaqué marine. Voir section 3.4 pour le cahier des charges de chaque contenu.</div>
             <span>Ces sujets ont été identifiés par croisement : 0% de mentions Barillet dans le Brand Tracker + volume de fan-out queries élevé. La liste est à réévaluer à chaque cycle mensuel du tracker selon les résultats réels.</span>
           </div>
         </li>
@@ -679,7 +704,7 @@
           <div class="prio-num">3</div>
           <div class="prio-content">
             <strong>Suivre la baseline de visibilité locale — panel GEOlocal actif</strong>
-            <div class="prio-action">→ Les 10 prompts GEOlocal sont actifs dans le tracker depuis le 23/05/2026. Valider les prompts avec le client, puis analyser les premiers résultats dès qu'ils sont disponibles. En parallèle : enrichir les pages <code>/agence/</code> avec contenu éditorial + ajouter <code>areaServed</code> dans le schema LocalBusiness.</div>
+            <div class="prio-action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>→ Les 10 prompts GEOlocal sont actifs dans le tracker depuis le 23/05/2026. Confirmer que les 10 prompts GEOlocal couvrent bien vos zones commerciales actives, puis analyser les premiers résultats dès qu'ils sont disponibles. En parallèle : enrichir les pages <code>/agence/</code> avec contenu éditorial + ajouter <code>areaServed</code> dans le schema LocalBusiness.</div>
             <span>Voir section 1.5 pour le détail des prompts et l'état des signaux techniques existants sur les pages agences.</span>
           </div>
         </li>
@@ -687,7 +712,7 @@
           <div class="prio-num">4</div>
           <div class="prio-content">
             <strong>Enrichir les textes SEO des pages catégories existantes</strong>
-            <div class="prio-action">→ Deux zones d'intervention : (1) intro de 2-3 phrases sous le H1 avec définition + usage clé + chiffre concret. (2) bloc éditorial de 200-400 mots en bas de page avec données chiffrées, cas d'usage pro et signal temporel "Mis à jour en 2026".</div>
+            <div class="prio-action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>→ Deux zones d'intervention : (1) intro de 2-3 phrases sous le H1 avec définition + usage clé + chiffre concret. (2) bloc éditorial de 200-400 mots en bas de page avec données chiffrées, cas d'usage pro et signal temporel "Mis à jour en 2026".</div>
             <span>Ces zones sont compatibles avec les contraintes de template des pages catégories. Les LLMs indexent l'intégralité de la page — un contenu structuré en bas reste exploitable même s'il n'est pas dans le premier tiers.</span>
           </div>
         </li>
@@ -695,7 +720,7 @@
           <div class="prio-num">5</div>
           <div class="prio-content">
             <strong>Implémenter FAQPage JSON-LD sur les pages catégories avec H2 questions</strong>
-            <div class="prio-action">→ Applicable sur les pages disposant déjà de H2 en forme de questions (/panneau-contreplaque, /panneau-melamine, /panneau-mdf, /panneau-osb). Action de faible coût sur la structure existante.</div>
+            <div class="prio-action"><span class="action-who action-barillet">✓ Action Barillet</span>→ Applicable sur les pages disposant déjà de H2 en forme de questions (/panneau-contreplaque, /panneau-melamine, /panneau-mdf, /panneau-osb). Action de faible coût sur la structure existante.</div>
             <span>Depuis août 2023, Google ne génère plus de rich results FAQPage pour les sites marchands. L'impact sur les citations LLM est incertain. À traiter comme une bonne pratique de balisage, sans en attendre de résultats mesurables à court terme.</span>
           </div>
         </li>
@@ -703,7 +728,7 @@
           <div class="prio-num">6</div>
           <div class="prio-content">
             <strong>Initier une présence sur les forums professionnels bois</strong>
-            <div class="prio-action">→ Cibles : lairdubois.fr · lamortaise.com · copaindescopeaux.fr. Approche en 3 étapes (M2 à M6) — observation, contribution experte, puis mention naturelle de Barillet. Voir section 4.2 pour le protocole détaillé.</div>
+            <div class="prio-action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>→ Cibles : lairdubois.fr · lamortaise.com · copaindescopeaux.fr. Approche en 3 étapes (M2 à M6) — observation, contribution experte, puis mention naturelle de Barillet. Voir section 4.2 pour le protocole détaillé.</div>
             <span>Ces forums sont activement indexés dans les corpus LLM. Une mention dans un fil de discussion populaire peut se retrouver citée dans les réponses IA pendant plusieurs mois.</span>
           </div>
         </li>
@@ -719,7 +744,7 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-      <p class="note" style="margin-bottom:18px;font-style:italic;">Timing indicatif — les durées dépendent des ressources disponibles et des résultats du Brand Tracker mensuel. Les phases peuvent se chevaucher selon les priorités client.</p>
+      <p class="note" style="margin-bottom:18px;font-style:italic;">Timing indicatif — les durées s'adaptent aux ressources disponibles et aux résultats mensuels du Brand Tracker. Les phases peuvent se chevaucher selon vos priorités.</p>
       <div style="overflow-x:auto;">
         <table style="width:100%;min-width:540px;table-layout:fixed;border-collapse:separate;border-spacing:0 5px;">
           <colgroup>
@@ -835,12 +860,12 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Avant d'optimiser quoi que ce soit, il faut établir deux certitudes : est-ce que les robots des LLMs peuvent accéder au site ? Et quelle image de Barillet renvoient-ils aujourd'hui quand on leur pose des questions métier ? Sans cette base, toutes les actions suivantes sont à l'aveugle.</p>
+    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Avant toute optimisation, deux points à établir : vos robots LLMs peuvent-ils accéder au site ? Et quelle image de Barillet Distribution renvoient les IA aujourd'hui quand vos clients leur posent des questions métier ? Sans cette base, toutes les actions suivantes sont à l'aveugle.</p>
     <h3 class="sub">1.1 Accessibilité des bots LLM</h3>
 
     <div class="finding warning">
       <div class="finding-title">🟡 Challenge JavaScript Cloudflare — configuration WAF à vérifier pour les bots LLM</div>
-      <div class="action">Demander à l'équipe technique un audit des règles WAF Cloudflare pour vérifier que GPTBot, ClaudeBot, PerplexityBot et Gemini-bot sont bien whitelistés (bypass du JS challenge). Si ce n'est pas le cas, ajouter ces user-agents dans les règles d'exception. Opération de configuration, sans impact sur la sécurité du site pour les visiteurs humains.</div>
+      <div class="action"><span class="action-who action-barillet">✓ Action Barillet</span>Demander à l'équipe technique un audit des règles WAF Cloudflare pour vérifier que GPTBot, ClaudeBot, PerplexityBot et Gemini-bot sont bien whitelistés (bypass du JS challenge). Si ce n'est pas le cas, ajouter ces user-agents dans les règles d'exception. Opération de configuration, sans impact sur la sécurité du site pour les visiteurs humains.</div>
       <div class="finding-body">
       <p>Le site utilise un challenge JavaScript (SlowAES cookie géré par Cloudflare) qui oblige tout client HTTP non-browser à résoudre une équation de chiffrement avant d'accéder au contenu.</p>
       <p>Les bots établis sont whitelistés au niveau WAF : Googlebot passe (confirmé par Rich Results Test) et Bingbot passe (confirmé par les données Bing Webmaster Tools).</p>
@@ -1397,17 +1422,17 @@
       <div class="action">
         <strong>Actions prioritaires :</strong>
         <ol style="padding-left:18px;margin-top:8px;line-height:2.2;">
-          <li>Valider avec le client les 10 prompts GEOlocal intégrés au tracker (voir tableau ci-dessous) — confirmer qu'ils correspondent aux zones géographiques prioritaires du réseau.</li>
-          <li>Attendre les premières données de citation (collecte démarrée le 23/05/2026) pour établir la baseline Axe 2.</li>
-          <li>Enrichir chaque page <code>/agence/[ville]</code> avec un paragraphe éditorial (zone desservie, types de clients, spécialités, délais de livraison).</li>
-          <li>Ajouter <code>areaServed</code> et <code>aggregateRating</code> dans le schema LocalBusiness de chaque agence.</li>
-          <li>Auditer et optimiser les fiches Google Business Profile (photos, horaires, catégories, description).</li>
+          <li><span class="action-who action-barillet">✓ Barillet</span>Confirmer que les 10 prompts GEOlocal ci-dessous correspondent aux zones géographiques prioritaires de votre réseau d'agences.</li>
+          <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Les premières données de citation (collecte démarrée le 23/05/2026) seront analysées ensemble pour établir la baseline Axe 2.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Enrichir chaque page <code>/agence/[ville]</code> avec un paragraphe éditorial : zone desservie, types de clients, spécialités, délais de livraison.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Ajouter <code>areaServed</code> et <code>aggregateRating</code> dans le schema LocalBusiness de chaque page agence.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Auditer et optimiser les fiches Google Business Profile de chaque agence : photos, horaires, catégories, description.</li>
         </ol>
       </div>
       <div class="finding-body">
         <p>Une part significative des requêtes professionnelles intègre une localisation : "fournisseur bois professionnel à [ville]", "distributeur panneaux [région]", "négociant bois livraison chantier [département]". Les LLMs peuvent recommander des acteurs locaux — c'est l'un des leviers les plus directs pour capter des clients pro en phase de recherche de fournisseur.</p>
         <p>Barillet dispose d'un réseau d'agences réparti sur plusieurs bassins géographiques. La question clé : ces agences sont-elles citées par les LLMs sur des requêtes locales ? 10 prompts ont été intégrés au LLM Brand Tracker le 23/05/2026 pour y répondre — les données seront disponibles dans les prochaines semaines.</p>
-        <p class="note" style="margin-top:12px;background:#fff8ed;border-left:3px solid #E9540D;padding:10px 14px;border-radius:0 6px 6px 0;">⚠ Ces prompts sont à valider avec le client : s'assurer qu'ils couvrent bien les zones géographiques où le réseau Barillet est implanté et actif commercialement.</p>
+        <p class="note" style="margin-top:12px;background:#fff8ed;border-left:3px solid #E9540D;padding:10px 14px;border-radius:0 6px 6px 0;">⚠ Merci de confirmer que ces zones correspondent bien aux agences actuellement actives commercialement — votre retour permettra d'ajuster le panel si nécessaire.</p>
 
         <h4 style="margin-top:22px;margin-bottom:12px;font-size:14px;font-weight:600;">Panel GEOlocal — 10 prompts actifs dans le LLM Brand Tracker</h4>
         <table class="data-table">
@@ -1569,7 +1594,7 @@
 
     <div class="finding warning">
       <div class="finding-title">🟡 Pages catégories : structure H2 questions existante — FAQPage non exploitée</div>
-      <div class="action">Implémenter FAQPage JSON-LD sur toutes les pages catégories avec sections questions</div>
+      <div class="action"><span class="action-who action-barillet">✓ Action Barillet</span>Implémenter FAQPage JSON-LD sur toutes les pages catégories avec sections questions</div>
       <div class="finding-body">
       <p>La page /panneau/panneau-contreplaque contient déjà des titres en H2 sous forme de questions : "Qu'est-ce que le panneau de bois contreplaqué ?", "Pourquoi utiliser du contreplaqué ?", "Comment choisir un panneau contreplaqué ?".</p>
       <p>C'est exactement la structure requise pour un FAQPage schema.</p>
@@ -1618,7 +1643,7 @@
 
     <div class="finding warning">
       <div class="finding-title">🟡 Pages catégories : bon socle de questions, contenu SEO insuffisant pour être cité</div>
-      <div class="action">Enrichir les réponses H2 avec chiffres, cas d'usage concrets et signal temporel "Mis à jour 2026". Ajouter une intro courte sous le H1 et/ou un bloc éditorial en bas de page. Appliquer sur toutes les pages catégories disposant d'une structure H2 questions.</div>
+      <div class="action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Enrichir les réponses H2 avec chiffres, cas d'usage concrets et signal temporel "Mis à jour 2026". Ajouter une intro courte sous le H1 et/ou un bloc éditorial en bas de page. Appliquer sur toutes les pages catégories disposant d'une structure H2 questions.</div>
       <div class="finding-body">
       <p>Les pages catégories (ex : /panneau/panneau-contreplaque) disposent d'une structure H2 correcte avec des questions pertinentes.</p>
       <p>Mais le contenu des réponses est trop générique (quelques lignes sans chiffres, sans cas d'usage concrets, sans signal temporel).</p>
@@ -1815,7 +1840,7 @@
 
     <div class="finding critical">
       <div class="finding-title">🔴 Enseignement clé : Barillet est invisible sur les queries commerciales à plus forte intention d'achat</div>
-      <div class="action">Créer une page "Commande professionnelle : livraison chantier et découpe sur mesure" qui répond explicitement aux queries "fournisseur + produit + France". Cette page doit mettre en avant les capacités opérationnelles de Barillet, pas seulement le catalogue produit. Balisage Organization + Service JSON-LD recommandé.</div>
+      <div class="action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Créer une page "Commande professionnelle : livraison chantier et découpe sur mesure" qui répond explicitement aux queries "fournisseur + produit + France". Cette page doit mettre en avant les capacités opérationnelles de Barillet, pas seulement le catalogue produit. Balisage Organization + Service JSON-LD recommandé.</div>
       <div class="finding-body">
       <p>Les fan-out queries les plus volumineuses sont toutes des requêtes de type "fournisseur / grossiste / distributeur + produit + France".</p>
       <p>Ces requêtes signalent une intention d'achat professionnelle forte.</p>
@@ -2128,7 +2153,7 @@
 
     <div class="finding warning">
       <div class="finding-title">🟡 Barillet absent de tous les forums professionnels du bois</div>
-      <div class="action">Développer une présence éditoriale authentique sur lairdubois.fr, lamortaise.com et copaindescopeaux.fr. L'objectif est de contribuer réellement à la communauté, pas d'acquérir des mentions. Google indique explicitement que les mentions inauthentiques n'apportent pas de valeur GEO et peuvent être détectées par ses systèmes anti-spam.</div>
+      <div class="action"><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Développer une présence éditoriale authentique sur lairdubois.fr, lamortaise.com et copaindescopeaux.fr. L'objectif est de contribuer réellement à la communauté, pas d'acquérir des mentions. Google indique explicitement que les mentions inauthentiques n'apportent pas de valeur GEO et peuvent être détectées par ses systèmes anti-spam.</div>
       <div class="finding-body">
       <p>Aucune mention de Barillet Distribution sur lairdubois.fr, lamortaise.com ou copaindescopeaux.fr dans les discussions sur les panneaux et fournisseurs. C'est à la fois un problème de visibilité LLM et un signal de faible notoriété communautaire.</p>
       <p><strong>Étape 1 (M2-M3) :</strong> Identifier les 10 à 15 threads actifs sur les sujets couverts (choix de panneaux, fournisseurs, livraison pro). Observer sans intervenir. Repérer les questions sans réponse satisfaisante.</p>
