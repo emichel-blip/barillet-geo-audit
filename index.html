@@ -6,19 +6,19 @@
 <title>Audit IA/GEO — Barillet Distribution</title>
 <style>
   :root {
-    --primary: #1a3a2a;
-    --accent: #2d6a4f;
-    --accent-light: #40916c;
+    --primary: #003D5F;
+    --accent: #ED621B;
+    --accent-light: #6EC1E4;
     --warning: #d62828;
     --warning-bg: #fff0f0;
-    --ok: #2d6a4f;
-    --ok-bg: #f0faf4;
-    --amber: #e07b00;
-    --amber-bg: #fff8ee;
-    --bg: #f8f7f4;
+    --ok: #2d7a4f;
+    --ok-bg: #f0f8fd;
+    --amber: #fbbe2c;
+    --amber-bg: #fffae8;
+    --bg: #ffffff;
     --white: #ffffff;
     --text: #1c1c1c;
-    --text-light: #5a5a5a;
+    --text-light: #54595F;
     --border: #e0ddd6;
     --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
   }
@@ -42,7 +42,7 @@
     font-size: 11px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #74b89a;
+    color: #6EC1E4;
     margin-bottom: 10px;
   }
   .report-header h1 {
@@ -51,7 +51,7 @@
     margin-bottom: 6px;
   }
   .report-header .subtitle {
-    color: #9ecfb5;
+    color: #a8dff0;
     font-size: 15px;
     margin-bottom: 24px;
   }
@@ -62,7 +62,7 @@
   }
   .meta-item {
     font-size: 13px;
-    color: #9ecfb5;
+    color: #a8dff0;
   }
   .meta-item strong {
     color: white;
@@ -90,7 +90,7 @@
     text-decoration: none;
     padding: 5px 12px;
     border-radius: 20px;
-    border: 1px solid #d4e8dd;
+    border: 1px solid #d0eef8;
     white-space: nowrap;
     transition: all 0.15s;
   }
@@ -146,7 +146,7 @@
   .amber { color: var(--amber); }
   .tag-red { background: var(--warning-bg); color: var(--warning); }
   .tag-green { background: var(--ok-bg); color: var(--ok); }
-  .tag-amber { background: var(--amber-bg); color: var(--amber); }
+  .tag-amber { background: var(--amber-bg); color: #7a5c00; }
 
   /* SECTIONS */
   .section {
@@ -237,8 +237,8 @@
     display: inline-block;
   }
   .finding.critical .action { background: #f5c6cb; color: #7b0000; }
-  .finding.warning .action { background: #fce5b6; color: #7b4000; }
-  .finding.ok .action { background: #c3e6cb; color: #0a4a20; }
+  .finding.warning .action { background: #fef0a0; color: #7b4000; }
+  .finding.ok .action { background: #c3e6cb; color: #003D5F; }
 
   /* TABLES */
   .data-table {
@@ -276,7 +276,7 @@
   }
   .pill-red { background: var(--warning-bg); color: var(--warning); }
   .pill-green { background: var(--ok-bg); color: var(--ok); }
-  .pill-amber { background: var(--amber-bg); color: var(--amber); }
+  .pill-amber { background: var(--amber-bg); color: #7a5c00; }
   .pill-grey { background: #eee; color: #555; }
 
   /* PROMPT PANEL */
@@ -307,11 +307,11 @@
     color: var(--text);
     line-height: 1.4;
   }
-  .prompt-notoriete .prompt-type { color: #0077b6; }
+  .prompt-notoriete .prompt-type { color: #003D5F; }
   .prompt-comparaison .prompt-type { color: #9b2226; }
   .prompt-info .prompt-type { color: #606c38; }
   .prompt-transac .prompt-type { color: #774936; }
-  .prompt-local .prompt-type { color: #5a189a; }
+  .prompt-local .prompt-type { color: #003D5F; }
 
   /* PRIORITY MATRIX */
   .priority-list { list-style: none; }
@@ -342,9 +342,9 @@
   .prio-action {
     font-size: 13px;
     font-weight: 600;
-    color: #0A3856;
-    background: #e8f2fb;
-    border-left: 3px solid #0A3856;
+    color: #003D5F;
+    background: #e3f4fb;
+    border-left: 3px solid #003D5F;
     padding: 8px 12px;
     border-radius: 0 6px 6px 0;
     margin-bottom: 8px;
@@ -403,11 +403,11 @@
   .callout h3 {
     font-size: 16px;
     margin-bottom: 8px;
-    color: #9ecfb5;
+    color: #a8dff0;
   }
   .callout p {
     font-size: 14px;
-    color: #c5dfd1;
+    color: #d0eef8;
     line-height: 1.65;
   }
 
@@ -499,9 +499,15 @@
     .export-btn, .toc { display: none !important; }
     body { background: white; }
     .content { max-width: 100%; padding: 0; }
-    .section-header { margin-top: 32px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    /* Forcer l'ouverture de toutes les sections repliées à l'impression */
+    .section.collapsed .section-body { display: block !important; }
+    .section.collapsed .section-toggle { transform: none !important; }
+    /* Conserver les couleurs de fond à l'impression */
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    .section-header { margin-top: 32px !important; }
+    .section-header { cursor: default; }
     .section-body { border: 1px solid #ccc !important; padding: 20px 24px; }
-    .finding { -webkit-print-color-adjust: exact; print-color-adjust: exact; break-inside: avoid; }
+    .finding { break-inside: avoid; }
     .score-grid { break-inside: avoid; }
     .data-table { break-inside: auto; font-size: 12px; }
     .data-table tr { break-inside: avoid; }
@@ -509,9 +515,11 @@
     .prompt-item { break-inside: avoid; margin-bottom: 8px; display: inline-block; width: 48%; }
     .source-grid { display: block; }
     .source-card { display: inline-block; width: 30%; margin: 4px; }
-    .report-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     h3.sub { break-after: avoid; }
     .kpi-section { break-inside: avoid; }
+    details { display: block; }
+    details > div { display: block !important; }
+    .section-toggle { display: none; }
     @page { margin: 15mm 12mm; size: A4; }
   }
 
@@ -553,14 +561,14 @@
     margin-right: 6px;
   }
   .action-barillet {
-    background: #fff0e8;
-    color: #C0420A;
-    border: 1px solid #E9540D;
+    background: #fff2ec;
+    color: #b84d14;
+    border: 1px solid #ED621B;
   }
   .action-conjoint {
-    background: #e8f0f8;
-    color: #0A3856;
-    border: 1px solid #0A3856;
+    background: #e3f0f8;
+    color: #003D5F;
+    border: 1px solid #003D5F;
   }
 </style>
 </head>
@@ -598,7 +606,7 @@
   <a href="#phase3">Phase 3 — Créer le contenu</a>
   <a href="#phase4">Phase 4 — Citations externes</a>
   <a href="#phase5">Phase 5 — Pilotage</a>
-  <a href="todo.html" style="background:#E9540D;color:#fff;border-radius:99px;padding:4px 14px;font-weight:700;">✓ Todo list</a>
+  <a href="todo.html" style="background:#ED621B;color:#fff;border-radius:99px;padding:4px 14px;font-weight:700;">✓ Todo list</a>
 </nav>
 
 <!-- CONTENT -->
@@ -614,18 +622,18 @@
     <div class="section-body">
 
     <!-- Réponse directe au brief client -->
-    <div style="background:#f9f5ff;border:2px solid #0A3856;border-radius:10px;padding:24px 28px;margin-bottom:32px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0A3856;margin-bottom:14px;">Réponse directe à votre brief</div>
+    <div style="background:#f0f6fa;border:2px solid #003D5F;border-radius:10px;padding:24px 28px;margin-bottom:32px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#003D5F;margin-bottom:14px;">Réponse directe à votre brief</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
         <div>
-          <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#E9540D;margin-bottom:8px;">Axe 1 · Présence de la marque dans les LLMs</div>
+          <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#ED621B;margin-bottom:8px;">Axe 1 · Présence de la marque dans les LLMs</div>
           <p style="font-size:14px;line-height:1.7;color:#1c1c1c;margin-bottom:8px;"><strong>Part de voix mesurée : 4,5%</strong> des réponses LLM sur 9 507 analyses (ChatGPT + Gemini, 30 prompts métier). Dispano, premier concurrent, atteint 24,3%.</p>
-          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;">L'écart n'est pas uniquement un problème de notoriété. Barillet n'a pas de contenu ciblant les thématiques que les LLMs cherchent à citer. Le plan d'action (phases 2, 3 et 4) y répond directement.</p>
+          <p style="font-size:13px;color:#54595F;line-height:1.6;">L'écart n'est pas uniquement un problème de notoriété. Barillet n'a pas de contenu ciblant les thématiques que les LLMs cherchent à citer. Le plan d'action (phases 2, 3 et 4) y répond directement.</p>
         </div>
         <div>
           <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2d6a4f;margin-bottom:8px;">Axe 2 · Localisation des agences</div>
           <p style="font-size:14px;line-height:1.7;color:#1c1c1c;margin-bottom:8px;"><strong>Baseline en cours de construction.</strong> 10 prompts géographiques ajoutés au LLM Brand Tracker depuis le 23/05/2026. La collecte de données est active.</p>
-          <p style="font-size:13px;color:#5a5a5a;line-height:1.6;">Les agences ont le socle technique (LocalBusiness schema valide, pages indexées). Ce qui manque : contenu éditorial, <code>areaServed</code>, GBP optimisé. Voir section 1.5 pour le protocole complet.</p>
+          <p style="font-size:13px;color:#54595F;line-height:1.6;">Les agences ont le socle technique (LocalBusiness schema valide, pages indexées). Ce qui manque : contenu éditorial, <code>areaServed</code>, GBP optimisé. Voir section 1.5 pour le protocole complet.</p>
         </div>
       </div>
     </div>
@@ -670,15 +678,15 @@
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 8px;">
-      <div style="background:#e8f2fb;border-left:4px solid #0A3856;padding:18px 20px;border-radius:6px;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0A3856;margin-bottom:8px;">Axe 1</div>
+      <div style="background:#e3f4fb;border-left:4px solid #003D5F;padding:18px 20px;border-radius:6px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#003D5F;margin-bottom:8px;">Axe 1</div>
         <strong style="font-size:15px;color:#1c1c1c;">Présence de marque dans les LLMs</strong>
-        <p style="margin-top:8px;font-size:13px;color:#5a5a5a;">Part de voix Barillet sur les requêtes métier — produits, services, approvisionnement pro. Mesurée via le LLM Brand Tracker (30 prompts, ChatGPT + Gemini). Baseline : 4,5% de mentions. Cible M6 : 8%.</p>
+        <p style="margin-top:8px;font-size:13px;color:#54595F;">Part de voix Barillet sur les requêtes métier — produits, services, approvisionnement pro. Mesurée via le LLM Brand Tracker (30 prompts, ChatGPT + Gemini). Baseline : 4,5% de mentions. Cible M6 : 8%.</p>
       </div>
-      <div style="background:#f0f8f4;border-left:4px solid #2d6a4f;padding:18px 20px;border-radius:6px;">
+      <div style="background:#f0f8fd;border-left:4px solid #2d6a4f;padding:18px 20px;border-radius:6px;">
         <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#2d6a4f;margin-bottom:8px;">Axe 2</div>
         <strong style="font-size:15px;color:#1c1c1c;">Localisation des agences</strong>
-        <p style="margin-top:8px;font-size:13px;color:#5a5a5a;">Présence de Barillet dans les réponses LLM à dimension géographique. Quand un professionnel demande "distributeur bois à [ville/région]", le réseau d'agences est-il mentionné ? Protocole et baseline à construire — voir section 1.5.</p>
+        <p style="margin-top:8px;font-size:13px;color:#54595F;">Présence de Barillet dans les réponses LLM à dimension géographique. Quand un professionnel demande "distributeur bois à [ville/région]", le réseau d'agences est-il mentionné ? Protocole et baseline à construire — voir section 1.5.</p>
       </div>
     </div>
 
@@ -752,75 +760,75 @@
           </tr>
         </thead>
         <tbody>
-          <tr style="background:#fff3f0;">
+          <tr style="background:#fff2ec;">
             <td><strong>1</strong></td>
             <td><strong>Whitelist WAF Cloudflare</strong> — Ajouter GPTBot, ClaudeBot, PerplexityBot et Gemini-bot dans les règles d'exception. Sans cette action, les LLMs ne peuvent pas lire le site.</td>
             <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
             <td>J1 – J5</td>
-            <td><span style="color:#c0300a;font-weight:700;font-size:11px;">Critique</span></td>
+            <td><span style="color:#b84d14;font-weight:700;font-size:11px;">Critique</span></td>
           </tr>
-          <tr style="background:#fff3f0;">
+          <tr style="background:#fff2ec;">
             <td><strong>2</strong></td>
             <td><strong>Page "Commande professionnelle"</strong> — Créer une page dédiée livraison chantier + découpe sur mesure. Requête à 0% de citation Barillet aujourd'hui, fort volume de fan-out queries.</td>
             <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
             <td>Juillet 2026</td>
-            <td><span style="color:#c0300a;font-weight:700;font-size:11px;">Critique</span></td>
+            <td><span style="color:#b84d14;font-weight:700;font-size:11px;">Critique</span></td>
           </tr>
           <tr>
             <td><strong>3</strong></td>
             <td><strong>Confirmer les zones GEOlocal</strong> — Valider que les 10 prompts géographiques actifs dans le tracker correspondent aux agences commercialement actives.</td>
             <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
             <td>J1 – J5</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>4</strong></td>
             <td><strong>Organization JSON-LD</strong> — Ajouter le schema Organization complet sur barillet-distribution.fr (nom, description, sameAs réseaux, contactPoint).</td>
             <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
             <td>S1 – S2</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>5</strong></td>
             <td><strong>LocalBusiness + areaServed sur pages agences</strong> — Compléter le schema de chaque agence avec zone desservie et agrégation d'avis.</td>
             <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
             <td>S1 – S2</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>6</strong></td>
             <td><strong>Installer Microsoft Clarity</strong> — Activer le tracking Citations (Bing Copilot) et vérifier le domaine via Bing Webmaster Tools. Établit la baseline de suivi des citations IA.</td>
             <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
             <td>M1</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>7</strong></td>
             <td><strong>Enrichir les pages /agence/[ville]</strong> — Ajouter un paragraphe éditorial sur chaque page agence : zone desservie, types de clients, spécialités, délais de livraison.</td>
             <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
             <td>M1 – M3</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>8</strong></td>
             <td><strong>Enrichir les textes SEO des pages catégories</strong> — Intro sous H1 + bloc éditorial bas de page avec données chiffrées, cas d'usage pro, signal "Mis à jour 2026".</td>
             <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
             <td>Juil – Oct 2026</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>9</strong></td>
             <td><strong>10 guides experts — calendrier éditorial</strong> — Production selon le planning juillet–octobre 2026 (voir section Phase 3 pour le détail semaine par semaine).</td>
             <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
             <td>Juil – Oct 2026</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr>
             <td><strong>10</strong></td>
             <td><strong>Revue mensuelle Brand Tracker</strong> — Analyse des résultats Axe 1 + Axe 2 chaque mois, ajustement du contenu et du panel de prompts selon les données.</td>
             <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
             <td>M1 – M6</td>
-            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
           <tr style="background:#f8f8f8;">
             <td><strong>11</strong></td>
@@ -881,7 +889,7 @@
             <tr>
               <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Accès bots LLM<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 1 · M0-M2</span></td>
               <td colspan="3" style="padding:0 2px;">
-                <div style="background:#E9540D;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                <div style="background:#ED621B;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
                   <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.1</span>
                   <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Whitelist WAF Cloudflare</span>
                 </div>
@@ -892,7 +900,7 @@
             <tr>
               <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Données structurées<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 2 · M0-M2</span></td>
               <td colspan="3" style="padding:0 2px;">
-                <div style="background:#0A3856;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                <div style="background:#003D5F;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
                   <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.2</span>
                   <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Technique · Organization + LocalBusiness</span>
                 </div>
@@ -916,7 +924,7 @@
               <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Pages agences — Axe 2<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Axe 2 · M1-M3</span></td>
               <td style="background:#f4f4f4;border-radius:4px;"></td>
               <td colspan="3" style="padding:0 2px;">
-                <div style="background:#028090;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                <div style="background:#6EC1E4;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
                   <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">AXE 2</span>
                   <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Agences · Contenu + areaServed schema</span>
                 </div>
@@ -928,7 +936,7 @@
               <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Baseline géo — Axe 2<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">GEOlocal · M2-M4</span></td>
               <td colspan="2" style="background:#f4f4f4;border-radius:4px;"></td>
               <td colspan="3" style="padding:0 2px;">
-                <div style="background:#028090;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                <div style="background:#6EC1E4;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
                   <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">AXE 2</span>
                   <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">GEOlocal · Panel + tracker mensuel</span>
                 </div>
@@ -940,7 +948,7 @@
               <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Sites tiers<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 4 · M2-M4</span></td>
               <td colspan="2" style="background:#f4f4f4;border-radius:4px;"></td>
               <td colspan="3" style="padding:0 2px;">
-                <div style="background:#1C7293;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                <div style="background:#003D5F;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
                   <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.4</span>
                   <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Citations · Forums + médias spécialisés</span>
                 </div>
@@ -952,7 +960,7 @@
               <td style="font-size:11px;font-weight:600;color:#444;padding-right:10px;vertical-align:middle;line-height:1.35;">Pilotage mensuel<br><span style="font-weight:400;font-size:9.5px;color:#aaa;">Phase 5 · M3-M5</span></td>
               <td colspan="3" style="background:#f4f4f4;border-radius:4px;"></td>
               <td colspan="3" style="padding:0 2px;">
-                <div style="background:#5a6776;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
+                <div style="background:#54595F;border-radius:5px;height:28px;display:flex;align-items:center;padding:0 10px;gap:6px;overflow:hidden;">
                   <span style="color:rgba(255,255,255,.65);font-size:8.5px;font-weight:800;letter-spacing:.6px;white-space:nowrap;">PH.5</span>
                   <span style="color:#fff;font-size:10px;font-weight:500;white-space:nowrap;">Pilotage · Brand Tracker Axe 1+2</span>
                 </div>
@@ -973,11 +981,11 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+    <div style="background:#fff2ec;border-left:4px solid #ED621B;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#ED621B;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
       <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Vérifier la whitelist WAF Cloudflare</strong> — confirmer que GPTBot, ClaudeBot, PerplexityBot et Gemini-bot ont bien accès au site.<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Confirmer les zones GEOlocal</strong> — valider les 10 prompts géographiques du tracker.</span></p>
     </div>
-    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Avant toute optimisation, deux points à établir : vos robots LLMs peuvent-ils accéder au site ? Et quelle image de Barillet Distribution renvoient les IA aujourd'hui quand vos clients leur posent des questions métier ? Sans cette base, toutes les actions suivantes sont à l'aveugle.</p>
+    <p class="note" style="margin-bottom:20px;background:#eef5fa;border-left:3px solid #003D5F;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Avant toute optimisation, deux points à établir : vos robots LLMs peuvent-ils accéder au site ? Et quelle image de Barillet Distribution renvoient les IA aujourd'hui quand vos clients leur posent des questions métier ? Sans cette base, toutes les actions suivantes sont à l'aveugle.</p>
     <h3 class="sub">1.1 Accessibilité des bots LLM</h3>
 
     <div class="finding warning">
@@ -1078,7 +1086,7 @@
       <div class="score-card" style="flex:1;min-width:160px;">
         <div class="score-val" style="color:var(--ok);font-size:28px;font-weight:700;">93,8%</div>
         <div class="score-label">Sources AIO = sites tiers (forums, guides, médias)</div>
-        <div class="score-status" style="background:#e8f5ee;color:var(--ok);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-top:6px;">Opportunité forte</div>
+        <div class="score-status" style="background:#e8f5fb;color:var(--ok);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin-top:6px;">Opportunité forte</div>
       </div>
       <div class="score-card" style="flex:1;min-width:160px;">
         <div class="score-val amber">43%</div>
@@ -1347,31 +1355,31 @@
         </tr>
       </thead>
       <tbody>
-        <tr style="background:#f0faf4;">
+        <tr style="background:#f0f8fd;">
           <td>Distributeur marques Egger et Polyrey</td>
           <td><strong style="color:var(--ok)">19,2%</strong></td>
           <td>59,4%</td>
           <td>−40 pts</td>
         </tr>
-        <tr style="background:#f0faf4;">
+        <tr style="background:#f0f8fd;">
           <td>Spécialiste bois et dérivés en région</td>
           <td><strong style="color:var(--ok)">13,2%</strong></td>
           <td>29,2%</td>
           <td>−16 pts</td>
         </tr>
-        <tr style="background:#f0faf4;">
+        <tr style="background:#f0f8fd;">
           <td>Mélaminé blanc grand format chantier pro</td>
           <td><strong style="color:var(--ok)">12,9%</strong></td>
           <td>55,5%</td>
           <td>−43 pts</td>
         </tr>
-        <tr style="background:#f0faf4;">
+        <tr style="background:#f0f8fd;">
           <td>Distributeur Fundermax / Trespa façade</td>
           <td><strong style="color:var(--ok)">12,5%</strong></td>
           <td>42,9%</td>
           <td>−30 pts</td>
         </tr>
-        <tr style="background:#f0faf4;">
+        <tr style="background:#f0f8fd;">
           <td>Grossiste contreplaqué okoumé / peuplier</td>
           <td><strong style="color:var(--ok)">11,0%</strong></td>
           <td>33,9%</td>
@@ -1549,7 +1557,7 @@
       <div class="finding-body">
         <p>Une part significative des requêtes professionnelles intègre une localisation : "fournisseur bois professionnel à [ville]", "distributeur panneaux [région]", "négociant bois livraison chantier [département]". Les LLMs peuvent recommander des acteurs locaux — c'est l'un des leviers les plus directs pour capter des clients pro en phase de recherche de fournisseur.</p>
         <p>Barillet dispose d'un réseau d'agences réparti sur plusieurs bassins géographiques. La question clé : ces agences sont-elles citées par les LLMs sur des requêtes locales ? 10 prompts ont été intégrés au LLM Brand Tracker le 23/05/2026 pour y répondre — les données seront disponibles dans les prochaines semaines.</p>
-        <p class="note" style="margin-top:12px;background:#fff8ed;border-left:3px solid #E9540D;padding:10px 14px;border-radius:0 6px 6px 0;">⚠ Merci de confirmer que ces zones correspondent bien aux agences actuellement actives commercialement — votre retour permettra d'ajuster le panel si nécessaire.</p>
+        <p class="note" style="margin-top:12px;background:#fffae8;border-left:3px solid #ED621B;padding:10px 14px;border-radius:0 6px 6px 0;">⚠ Merci de confirmer que ces zones correspondent bien aux agences actuellement actives commercialement — votre retour permettra d'ajuster le panel si nécessaire.</p>
 
         <h4 style="margin-top:22px;margin-bottom:12px;font-size:14px;font-weight:600;">Panel GEOlocal — 10 prompts actifs dans le LLM Brand Tracker</h4>
         <table class="data-table">
@@ -1632,11 +1640,11 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+    <div style="background:#fff2ec;border-left:4px solid #ED621B;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#ED621B;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
       <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Implémenter Organization JSON-LD</strong> + <strong>compléter LocalBusiness schema</strong> (areaServed, aggregateRating) sur les pages agences + <strong>FAQPage JSON-LD</strong> sur les pages catégories avec H2 questions.<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Enrichir les textes SEO des pages catégories</strong> — intro H1 + bloc éditorial bas de page.</span></p>
     </div>
-    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs lisent le code HTML au même titre que le contenu textuel. Des données structurées bien renseignées aident les moteurs IA à identifier avec certitude ce qu'est Barillet, ce qu'il distribue et où il opère. Ce sont des signaux d'identité de marque — leur impact sur les citations LLM reste incertain, mais ils constituent une bonne pratique SEO fondamentale à coût limité.</p>
+    <p class="note" style="margin-bottom:20px;background:#eef5fa;border-left:3px solid #003D5F;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs lisent le code HTML au même titre que le contenu textuel. Des données structurées bien renseignées aident les moteurs IA à identifier avec certitude ce qu'est Barillet, ce qu'il distribue et où il opère. Ce sont des signaux d'identité de marque — leur impact sur les citations LLM reste incertain, mais ils constituent une bonne pratique SEO fondamentale à coût limité.</p>
     <div class="finding warning" style="margin-bottom:24px;">
       <div class="finding-title">🟡 Contexte : état de l'art GEO en mai 2026</div>
       <div class="finding-body">
@@ -1759,11 +1767,11 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+    <div style="background:#fff2ec;border-left:4px solid #ED621B;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#ED621B;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
       <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Produire 10 guides experts</strong> selon le calendrier éditorial juillet–octobre 2026 + <strong>créer la page "Commande professionnelle"</strong> (livraison chantier, découpe sur mesure).<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Enrichir les pages /agence/[ville]</strong> avec contenu éditorial (zone, clients, spécialités, délais).</span></p>
     </div>
-    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne citent pas des pages produits — ils citent des sources qui répondent aux questions de leurs utilisateurs. Cette phase identifie les sujets sur lesquels Barillet n'a aucun contenu (et donc ne peut pas être cité), et construit un plan de production priorisé par potentiel de citabilité.</p>
+    <p class="note" style="margin-bottom:20px;background:#eef5fa;border-left:3px solid #003D5F;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne citent pas des pages produits — ils citent des sources qui répondent aux questions de leurs utilisateurs. Cette phase identifie les sujets sur lesquels Barillet n'a aucun contenu (et donc ne peut pas être cité), et construit un plan de production priorisé par potentiel de citabilité.</p>
     <h3 class="sub">3.1 Diagnostic du contenu existant</h3>
 
     <div class="finding warning">
@@ -2093,7 +2101,7 @@
           <td><span class="pill pill-red">Priorité 1</span></td>
           <td>10 fan-out</td>
         </tr>
-        <tr style="background:#fef9ec;">
+        <tr style="background:#fffae8;">
           <td colspan="5" style="text-align:center;font-size:12px;font-weight:600;color:#888;padding:10px;">⏸ Pause production — Août 2026 (01/08 → 31/08)</td>
         </tr>
         <tr>
@@ -2152,27 +2160,27 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+    <div style="background:#fff2ec;border-left:4px solid #ED621B;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#ED621B;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
       <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Initier une présence éditoriale</strong> sur lairdubois.fr, lamortaise.com, copaindescopeaux.fr + <strong>campagne netlinking ciblée</strong> sur 5 à 8 domaines bois/BTP identifiés (voir tableau budget).</p>
     </div>
-    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne se basent pas uniquement sur le site de Barillet — ils agrègent des milliers de sources tierces. Si d'autres sites parlent de Barillet (forums pros, articles de fond, annuaires sectoriels), ces mentions alimentent directement les réponses IA. Cette phase cartographie les sources à travailler en priorité pour construire cette présence externe.</p>
+    <p class="note" style="margin-bottom:20px;background:#eef5fa;border-left:3px solid #003D5F;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne se basent pas uniquement sur le site de Barillet — ils agrègent des milliers de sources tierces. Si d'autres sites parlent de Barillet (forums pros, articles de fond, annuaires sectoriels), ces mentions alimentent directement les réponses IA. Cette phase cartographie les sources à travailler en priorité pour construire cette présence externe.</p>
     <h3 class="sub">4.1 Sources que les LLMs utilisent sur la thématique bois/panneaux</h3>
     <p class="note" style="margin-bottom:14px;">Ces domaines sont les cibles prioritaires pour le netlinking et les relations presse. Une mention ou un backlink depuis ces sources augmente directement les chances d'être cité par les LLMs.</p>
 
-    <div style="background:#f9f5ff;border:1px solid #ddd;border-radius:10px;padding:20px 24px;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0A3856;margin-bottom:12px;">Budget — Netlinking &amp; earned media (6 mois)</div>
+    <div style="background:#f0f6fa;border:1px solid #ddd;border-radius:10px;padding:20px 24px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#003D5F;margin-bottom:12px;">Budget — Netlinking &amp; earned media (6 mois)</div>
 
       <div style="display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
-        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #dde3ee;border-radius:8px;padding:12px 16px;text-align:center;">
-          <div style="font-size:22px;font-weight:700;color:#0A3856;">103</div>
+        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #d0e5f0;border-radius:8px;padding:12px 16px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#003D5F;">103</div>
           <div style="font-size:11px;color:#666;margin-top:2px;">domaines identifiés<br>sur 2 884 analysés</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #dde3ee;border-radius:8px;padding:12px 16px;text-align:center;">
-          <div style="font-size:22px;font-weight:700;color:#0A3856;">1 067 €</div>
+        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #d0e5f0;border-radius:8px;padding:12px 16px;text-align:center;">
+          <div style="font-size:22px;font-weight:700;color:#003D5F;">1 067 €</div>
           <div style="font-size:11px;color:#666;margin-top:2px;">prix moyen<br>du lien (plateforme)</div>
         </div>
-        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #dde3ee;border-radius:8px;padding:12px 16px;text-align:center;">
+        <div style="flex:1;min-width:140px;background:#fff;border:1px solid #d0e5f0;border-radius:8px;padding:12px 16px;text-align:center;">
           <div style="font-size:22px;font-weight:700;color:#888;">139 k€ – 226 k€</div>
           <div style="font-size:11px;color:#666;margin-top:2px;">budget si achat<br>des 103 liens</div>
         </div>
@@ -2180,7 +2188,7 @@
 
       <p class="note" style="margin-bottom:12px;">Source : export <strong>Linkfinder</strong> des domaines identifiés par le LLM Brand Tracker (2 884 sources citant les concurrents sur la thématique bois/panneaux). <strong>103 d'entre eux sont négociables sur la plateforme.</strong> Prix relevés au 27/05/2026. L'objectif n'est pas d'acheter les 103 liens — mais de cibler en priorité les domaines thématiquement proches de Barillet, qui sont déjà actifs dans les corpus LLM.</p>
 
-      <p style="font-size:13px;font-weight:600;color:#0A3856;margin:0 0 8px;">Sources prioritaires — bois, construction, habitat (sélection Linkfinder)</p>
+      <p style="font-size:13px;font-weight:600;color:#003D5F;margin:0 0 8px;">Sources prioritaires — bois, construction, habitat (sélection Linkfinder)</p>
       <table class="data-table" style="margin-bottom:16px;">
         <thead>
           <tr><th>Domaine</th><th>Prix Linkfinder</th><th>TF</th><th>Pertinence GEO</th></tr>
@@ -2199,7 +2207,7 @@
         </tbody>
       </table>
 
-      <p style="font-size:13px;font-weight:600;color:#0A3856;margin:0 0 8px;">Scénarios budget sur 6 mois</p>
+      <p style="font-size:13px;font-weight:600;color:#003D5F;margin:0 0 8px;">Scénarios budget sur 6 mois</p>
       <table class="data-table" style="margin-bottom:0;">
         <thead>
           <tr><th>Scénario</th><th>Sources cibles</th><th>Nb liens</th><th>Budget HT</th></tr>
@@ -2223,7 +2231,7 @@
             <td>8 liens</td>
             <td><strong>3 200 – 3 330 € HT</strong></td>
           </tr>
-          <tr style="background:#fff8ed;">
+          <tr style="background:#fffae8;">
             <td><strong>Exhaustif — 103 liens plateforme</strong> <span style="font-weight:400;font-size:11px;color:#888;">(ordre de grandeur)</span></td>
             <td>Ensemble des domaines disponibles sur Linkfinder</td>
             <td>103 liens</td>
@@ -2340,11 +2348,11 @@
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
-    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+    <div style="background:#fff2ec;border-left:4px solid #ED621B;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#ED621B;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
       <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Installer Microsoft Clarity</strong> + vérifier le domaine Bing Webmaster Tools pour activer le suivi des citations IA.<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Revue mensuelle Brand Tracker</strong> — analyser les résultats, ajuster le plan de contenu selon les données réelles.</span></p>
     </div>
-    <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Le GEO est un travail de moyen terme — les effets se mesurent sur plusieurs mois, pas en quelques semaines. Cette phase installe les indicateurs de suivi pour piloter la progression mois par mois, identifier ce qui fonctionne, et ajuster la stratégie en fonction des données réelles plutôt que d'hypothèses.</p>
+    <p class="note" style="margin-bottom:20px;background:#eef5fa;border-left:3px solid #003D5F;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Le GEO est un travail de moyen terme — les effets se mesurent sur plusieurs mois, pas en quelques semaines. Cette phase installe les indicateurs de suivi pour piloter la progression mois par mois, identifier ce qui fonctionne, et ajuster la stratégie en fonction des données réelles plutôt que d'hypothèses.</p>
     <div class="kpi-section">
       <h4>Mensuel — LLM Brand Tracker</h4>
       <table class="data-table">
@@ -2375,7 +2383,7 @@
     </div>
 
     <div class="kpi-section">
-      <h4>Mensuel — Microsoft Clarity Citations <span style="font-size:11px;font-weight:400;color:#2d7a4f;background:#e6f4ec;border-radius:4px;padding:2px 7px;margin-left:8px;">Disponible depuis le 13/05/2026</span></h4>
+      <h4>Mensuel — Microsoft Clarity Citations <span style="font-size:11px;font-weight:400;color:#2d7a4f;background:#e3f4fb;border-radius:4px;padding:2px 7px;margin-left:8px;">Disponible depuis le 13/05/2026</span></h4>
       <p class="note" style="margin-bottom:12px;">Microsoft Clarity propose depuis mai 2026 un tableau de bord natif <strong>AI Visibility → Citations</strong>, gratuit, qui mesure directement la présence de barillet-distribution.fr dans les réponses générées par <strong>Bing Copilot</strong>. Prérequis : code de tracking Clarity installé sur le site + vérification de domaine via Bing Webmaster Tools ou GSC.</p>
       <table class="data-table">
         <thead>
@@ -2404,7 +2412,7 @@
           </tr>
         </tbody>
       </table>
-      <p class="note" style="margin-top:10px;"><strong>Accès :</strong> Clarity Dashboard → <em>AI Visibility</em> → <em>Citations</em>. Outil 100% gratuit. Source : <a href="https://clarity.microsoft.com/blog/citations-now-generally-available/" target="_blank" style="color:#0A3856;">clarity.microsoft.com/blog/citations-now-generally-available</a></p>
+      <p class="note" style="margin-top:10px;"><strong>Accès :</strong> Clarity Dashboard → <em>AI Visibility</em> → <em>Citations</em>. Outil 100% gratuit. Source : <a href="https://clarity.microsoft.com/blog/citations-now-generally-available/" target="_blank" style="color:#003D5F;">clarity.microsoft.com/blog/citations-now-generally-available</a></p>
     </div>
 
     <div class="kpi-section">
