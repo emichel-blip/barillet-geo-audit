@@ -593,10 +593,10 @@
 <nav class="toc">
   <a href="#synthese">Synthèse &amp; Axes prioritaires</a>
   <a href="#roadmap">Roadmap</a>
-  <a href="#phase1">Phase 1 — Diagnostic</a>
-  <a href="#phase2">Phase 2 — Technique</a>
-  <a href="#phase3">Phase 3 — Contenu éditorial sur votre site</a>
-  <a href="#phase4">Phase 4 — Citations et mentions sur les sites tiers</a>
+  <a href="#phase1">Phase 1 — Accès des IA</a>
+  <a href="#phase2">Phase 2 — Signaux techniques</a>
+  <a href="#phase3">Phase 3 — Créer le contenu</a>
+  <a href="#phase4">Phase 4 — Citations externes</a>
   <a href="#phase5">Phase 5 — Pilotage</a>
 </nav>
 
@@ -734,6 +734,118 @@
         </li>
       </ul>
     </div>
+
+    <!-- PLAN D'ACTIONS CONSOLIDÉ -->
+    <div style="margin-top:32px;">
+      <h3 class="sub" style="margin-top:0;">Plan d'actions opérationnel — Vue complète</h3>
+      <p class="note" style="margin-bottom:16px;">Toutes les actions du plan GEO sur 6 mois — classées par priorité et timing. Les détails de chaque action sont dans la section correspondante ci-dessous.</p>
+
+      <table class="data-table" style="margin-bottom:0;">
+        <thead>
+          <tr>
+            <th style="width:36px;">#</th>
+            <th>Action</th>
+            <th style="width:160px;">Responsable</th>
+            <th style="width:110px;">Timing</th>
+            <th style="width:80px;">Priorité</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fff3f0;">
+            <td><strong>1</strong></td>
+            <td><strong>Whitelist WAF Cloudflare</strong> — Ajouter GPTBot, ClaudeBot, PerplexityBot et Gemini-bot dans les règles d'exception. Sans cette action, les LLMs ne peuvent pas lire le site.</td>
+            <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
+            <td>J1 – J5</td>
+            <td><span style="color:#c0300a;font-weight:700;font-size:11px;">Critique</span></td>
+          </tr>
+          <tr style="background:#fff3f0;">
+            <td><strong>2</strong></td>
+            <td><strong>Page "Commande professionnelle"</strong> — Créer une page dédiée livraison chantier + découpe sur mesure. Requête à 0% de citation Barillet aujourd'hui, fort volume de fan-out queries.</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>Juillet 2026</td>
+            <td><span style="color:#c0300a;font-weight:700;font-size:11px;">Critique</span></td>
+          </tr>
+          <tr>
+            <td><strong>3</strong></td>
+            <td><strong>Confirmer les zones GEOlocal</strong> — Valider que les 10 prompts géographiques actifs dans le tracker correspondent aux agences commercialement actives.</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>J1 – J5</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>4</strong></td>
+            <td><strong>Organization JSON-LD</strong> — Ajouter le schema Organization complet sur barillet-distribution.fr (nom, description, sameAs réseaux, contactPoint).</td>
+            <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
+            <td>S1 – S2</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>5</strong></td>
+            <td><strong>LocalBusiness + areaServed sur pages agences</strong> — Compléter le schema de chaque agence avec zone desservie et agrégation d'avis.</td>
+            <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
+            <td>S1 – S2</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>6</strong></td>
+            <td><strong>Installer Microsoft Clarity</strong> — Activer le tracking Citations (Bing Copilot) et vérifier le domaine via Bing Webmaster Tools. Établit la baseline de suivi des citations IA.</td>
+            <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
+            <td>M1</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>7</strong></td>
+            <td><strong>Enrichir les pages /agence/[ville]</strong> — Ajouter un paragraphe éditorial sur chaque page agence : zone desservie, types de clients, spécialités, délais de livraison.</td>
+            <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
+            <td>M1 – M3</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>8</strong></td>
+            <td><strong>Enrichir les textes SEO des pages catégories</strong> — Intro sous H1 + bloc éditorial bas de page avec données chiffrées, cas d'usage pro, signal "Mis à jour 2026".</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>Juil – Oct 2026</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>9</strong></td>
+            <td><strong>10 guides experts — calendrier éditorial</strong> — Production selon le planning juillet–octobre 2026 (voir section Phase 3 pour le détail semaine par semaine).</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>Juil – Oct 2026</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr>
+            <td><strong>10</strong></td>
+            <td><strong>Revue mensuelle Brand Tracker</strong> — Analyse des résultats Axe 1 + Axe 2 chaque mois, ajustement du contenu et du panel de prompts selon les données.</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>M1 – M6</td>
+            <td><span style="color:#E9540D;font-weight:700;font-size:11px;">Haute</span></td>
+          </tr>
+          <tr style="background:#f8f8f8;">
+            <td><strong>11</strong></td>
+            <td><strong>FAQPage JSON-LD sur pages catégories</strong> — Baliser les H2 questions existants sur /panneau-contreplaque, /panneau-melamine, /panneau-mdf, /panneau-osb.</td>
+            <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
+            <td>S1 – S2</td>
+            <td><span style="color:#888;font-weight:700;font-size:11px;">Normale</span></td>
+          </tr>
+          <tr style="background:#f8f8f8;">
+            <td><strong>12</strong></td>
+            <td><strong>Présence forums bois</strong> — Contribution éditoriale sur lairdubois.fr, lamortaise.com, copaindescopeaux.fr. Approche communautaire progressive sur 6 mois.</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>M2 – M6</td>
+            <td><span style="color:#888;font-weight:700;font-size:11px;">Normale</span></td>
+          </tr>
+          <tr style="background:#f8f8f8;">
+            <td><strong>13</strong></td>
+            <td><strong>Netlinking ciblé — sources bois/BTP</strong> — 5 à 8 liens sur des domaines thématiques identifiés par le LLM Brand Tracker (voir section Phase 4 pour la sélection).</td>
+            <td><span class="action-who action-conjoint" style="margin:0;">✓ Empirik + Barillet</span></td>
+            <td>M2 – M6</td>
+            <td><span style="color:#888;font-weight:700;font-size:11px;">Normale</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note" style="margin-top:10px;font-size:12px;color:#888;">J = jours ouvrés · S = semaines · M = mois après démarrage. Critique = bloquant pour la suite / Haute = impact direct sur les KPIs M3-M6 / Normale = complément.</p>
+    </div>
     </div>
   </div>
 
@@ -856,10 +968,14 @@
   <div class="section collapsed" id="phase1">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="phase-badge">Phase 1</div>
-      <h2>Diagnostic — J1 à J5</h2>
+      <h2>Vérifier l'accès des IA à votre site — J1 à J5</h2>
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
+    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Vérifier la whitelist WAF Cloudflare</strong> — confirmer que GPTBot, ClaudeBot, PerplexityBot et Gemini-bot ont bien accès au site.<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Confirmer les zones GEOlocal</strong> — valider les 10 prompts géographiques du tracker.</span></p>
+    </div>
     <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Avant toute optimisation, deux points à établir : vos robots LLMs peuvent-ils accéder au site ? Et quelle image de Barillet Distribution renvoient les IA aujourd'hui quand vos clients leur posent des questions métier ? Sans cette base, toutes les actions suivantes sont à l'aveugle.</p>
     <h3 class="sub">1.1 Accessibilité des bots LLM</h3>
 
@@ -1511,10 +1627,14 @@
   <div class="section collapsed" id="phase2">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="phase-badge">Phase 2</div>
-      <h2>Technique — Semaines 1-2</h2>
+      <h2>Mettre en place les signaux techniques — Semaines 1-2</h2>
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
+    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Implémenter Organization JSON-LD</strong> + <strong>compléter LocalBusiness schema</strong> (areaServed, aggregateRating) sur les pages agences + <strong>FAQPage JSON-LD</strong> sur les pages catégories avec H2 questions.<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Enrichir les textes SEO des pages catégories</strong> — intro H1 + bloc éditorial bas de page.</span></p>
+    </div>
     <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs lisent le code HTML au même titre que le contenu textuel. Des données structurées bien renseignées aident les moteurs IA à identifier avec certitude ce qu'est Barillet, ce qu'il distribue et où il opère. Ce sont des signaux d'identité de marque — leur impact sur les citations LLM reste incertain, mais ils constituent une bonne pratique SEO fondamentale à coût limité.</p>
     <div class="finding warning" style="margin-bottom:24px;">
       <div class="finding-title">🟡 Contexte : état de l'art GEO en mai 2026</div>
@@ -1634,10 +1754,14 @@
   <div class="section collapsed" id="phase3">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="phase-badge">Phase 3</div>
-      <h2>Contenu éditorial sur votre site — Juillet à Octobre 2026</h2>
+      <h2>Créer le contenu que les IA vont citer — Juillet à Octobre 2026</h2>
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
+    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Produire 10 guides experts</strong> selon le calendrier éditorial juillet–octobre 2026 + <strong>créer la page "Commande professionnelle"</strong> (livraison chantier, découpe sur mesure).<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Enrichir les pages /agence/[ville]</strong> avec contenu éditorial (zone, clients, spécialités, délais).</span></p>
+    </div>
     <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne citent pas des pages produits — ils citent des sources qui répondent aux questions de leurs utilisateurs. Cette phase identifie les sujets sur lesquels Barillet n'a aucun contenu (et donc ne peut pas être cité), et construit un plan de production priorisé par potentiel de citabilité.</p>
     <h3 class="sub">3.1 Diagnostic du contenu existant</h3>
 
@@ -2023,10 +2147,14 @@
   <div class="section collapsed" id="phase4">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="phase-badge">Phase 4</div>
-      <h2>Citations et mentions sur les sites tiers — Mois 2 à 6</h2>
+      <h2>Obtenir des citations sur les sources que les IA consultent — Mois 2 à 6</h2>
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
+    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Initier une présence éditoriale</strong> sur lairdubois.fr, lamortaise.com, copaindescopeaux.fr + <strong>campagne netlinking ciblée</strong> sur 5 à 8 domaines bois/BTP identifiés (voir tableau budget).</p>
+    </div>
     <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Les LLMs ne se basent pas uniquement sur le site de Barillet — ils agrègent des milliers de sources tierces. Si d'autres sites parlent de Barillet (forums pros, articles de fond, annuaires sectoriels), ces mentions alimentent directement les réponses IA. Cette phase cartographie les sources à travailler en priorité pour construire cette présence externe.</p>
     <h3 class="sub">4.1 Sources que les LLMs utilisent sur la thématique bois/panneaux</h3>
     <p class="note" style="margin-bottom:14px;">Ces domaines sont les cibles prioritaires pour le netlinking et les relations presse. Une mention ou un backlink depuis ces sources augmente directement les chances d'être cité par les LLMs.</p>
@@ -2207,10 +2335,14 @@
   <div class="section collapsed" id="phase5">
     <div class="section-header" onclick="toggleSection(this)">
       <div class="phase-badge">Phase 5</div>
-      <h2>Pilotage — Plan mensuel de suivi</h2>
+      <h2>Piloter et mesurer les résultats mois par mois</h2>
       <span class="section-toggle">▼</span>
     </div>
     <div class="section-body">
+    <div style="background:#fff3f0;border-left:4px solid #E9540D;padding:14px 18px;border-radius:0 6px 6px 0;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#E9540D;margin-bottom:6px;">Ce que vous devez faire dans cette phase</div>
+      <p style="margin:0;font-size:13px;line-height:1.7;"><span class="action-who action-barillet" style="margin-right:8px;">✓ Barillet</span><strong>Installer Microsoft Clarity</strong> + vérifier le domaine Bing Webmaster Tools pour activer le suivi des citations IA.<br><span style="margin-left:0;margin-top:6px;display:inline-block;"><span class="action-who action-conjoint" style="margin-right:8px;">✓ Empirik + Barillet</span><strong>Revue mensuelle Brand Tracker</strong> — analyser les résultats, ajuster le plan de contenu selon les données réelles.</span></p>
+    </div>
     <p class="note" style="margin-bottom:20px;background:#f0f4f8;border-left:3px solid #0A3856;padding:12px 16px;border-radius:0 6px 6px 0;"><strong>Pourquoi cette phase ?</strong> Le GEO est un travail de moyen terme — les effets se mesurent sur plusieurs mois, pas en quelques semaines. Cette phase installe les indicateurs de suivi pour piloter la progression mois par mois, identifier ce qui fonctionne, et ajuster la stratégie en fonction des données réelles plutôt que d'hypothèses.</p>
     <div class="kpi-section">
       <h4>Mensuel — LLM Brand Tracker</h4>
