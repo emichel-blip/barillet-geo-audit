@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan d'actions GEO — Barillet Distribution</title>
+  <style>
+    :root {
+      --primary: #0A3856;
+      --orange: #E9540D;
+      --green: #2d7a4f;
+      --bg: #f2f1ee;
+      --white: #ffffff;
+      --border: #e0ddd8;
+      --text: #1c1c1c;
+      --muted: #6b6b6b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--primary);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .logo {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .logo span { color: var(--orange); }
+    .header-title {
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      border-left: 1px solid rgba(255,255,255,.2);
+      padding-left: 16px;
+      margin-left: 0;
+    }
+    .back-link {
+      font-size: 12px;
+      color: rgba(255,255,255,.6);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color .2s;
+    }
+    .back-link:hover { color: #fff; }
+
+    /* CONTENT */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* PROGRESS */
+    .progress-block {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    .progress-stat {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .progress-stat .num {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+    .progress-stat .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: .6px;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      min-width: 200px;
+    }
+    .progress-bar-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar-track {
+      height: 10px;
+      background: #e8e8e8;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), #f5803a);
+      border-radius: 99px;
+      transition: width .4s ease;
+    }
+    .progress-bar-fill.done { background: linear-gradient(90deg, var(--green), #3aad70); }
+
+    /* FILTERS */
+    .filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filters-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-right: 4px;
+    }
+    .filter-btn {
+      padding: 5px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .filter-btn.orange.active { background: var(--orange); border-color: var(--orange); }
+    .filter-btn.green.active { background: var(--green); border-color: var(--green); }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 28px 0 10px;
+      padding-left: 4px;
+    }
+
+    /* TASK CARD */
+    .task-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+      transition: box-shadow .15s, border-color .15s, opacity .2s;
+      position: relative;
+    }
+    .task-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.07); border-color: #ccc; }
+    .task-card.done { opacity: .5; }
+    .task-card.done .task-title { text-decoration: line-through; color: var(--muted); }
+
+    .task-check {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #ccc;
+      border-radius: 6px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .15s;
+    }
+    .task-card.done .task-check {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .task-check-icon {
+      color: #fff;
+      font-size: 13px;
+      display: none;
+    }
+    .task-card.done .task-check-icon { display: block; }
+
+    .task-body { flex: 1; min-width: 0; }
+    .task-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .task-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .task-meta {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      white-space: nowrap;
+    }
+    .badge-barillet { background: #fff0e8; color: #c0420a; border: 1px solid #E9540D; }
+    .badge-conjoint { background: #e8f0f8; color: #0A3856; border: 1px solid #0A3856; }
+    .badge-timing {
+      background: #f0f0f0;
+      color: #555;
+      border: 1px solid #ddd;
+      font-weight: 600;
+    }
+    .badge-critique { background: #fff0ee; color: #c0300a; border: 1px solid #f5b0a0; }
+    .badge-haute { background: #fff8f0; color: #c06010; border: 1px solid #f5d0a0; }
+    .badge-normale { background: #f5f5f5; color: #666; border: 1px solid #ddd; }
+
+    /* RESET */
+    .reset-btn {
+      font-size: 11px;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      transition: color .15s;
+      text-decoration: underline;
+    }
+    .reset-btn:hover { color: var(--text); }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #aaa;
+      margin-top: 48px;
+    }
+
+    /* HIDDEN */
+    .task-card[data-hidden="true"] { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo">EMPI<span>RIK</span></div>
+    <div class="header-title">Plan d'actions GEO — Barillet Distribution</div>
+  </div>
+  <a href="index.html" class="back-link">← Revenir à l'audit complet</a>
+</div>
+
+<div class="content">
+
+  <!-- PROGRESS -->
+  <div class="progress-block">
+    <div class="progress-stat">
+      <div class="num" id="count-done">0</div>
+      <div class="label">Actions<br>réalisées</div>
+    </div>
+    <div class="progress-stat">
+      <div class="num" id="count-total">13</div>
+      <div class="label">Actions<br>au total</div>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-label">
+        <span>Progression</span>
+        <span id="pct-label">0%</span>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetAll()">Tout réinitialiser</button>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <span class="filters-label">Filtrer :</span>
+    <button class="filter-btn active" onclick="filterTasks('all', this)">Toutes</button>
+    <button class="filter-btn orange" onclick="filterTasks('barillet', this)">✓ Barillet</button>
+    <button class="filter-btn green" onclick="filterTasks('conjoint', this)">✓ Empirik + Barillet</button>
+    <button class="filter-btn" onclick="filterTasks('todo', this)">À faire</button>
+    <button class="filter-btn" onclick="filterTasks('done', this)">Réalisées</button>
+  </div>
+
+  <!-- TÂCHES CRITIQUES -->
+  <div class="section-label" data-group="critique">🔴 Priorité critique — à lancer immédiatement</div>
+
+  <div class="task-card" data-id="1" data-owner="barillet" data-priority="critique" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Whitelist WAF Cloudflare pour les bots LLM</div>
+      <div class="task-desc">Ajouter GPTBot (OpenAI), ClaudeBot (Anthropic), PerplexityBot et Gemini-bot dans les règles d'exception du WAF Cloudflare. Sans cette action, les LLMs ne peuvent pas lire le site — toutes les autres optimisations GEO sont bloquées.</div>
+      <div class="task-meta">
+        <span class="badge badge-barillet">✓ Barillet</span>
+        <span class="badge badge-timing">J1 – J5</span>
+        <span class="badge badge-critique">Critique</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="2" data-owner="conjoint" data-priority="critique" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Créer la page "Commande professionnelle"</div>
+      <div class="task-desc">Page dédiée livraison chantier + découpe sur mesure. Sujet à 0% de citation Barillet aujourd'hui, fort volume de fan-out queries. Balisage Organization + Service JSON-LD recommandé.</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">Juillet 2026</span>
+        <span class="badge badge-critique">Critique</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TÂCHES HAUTES -->
+  <div class="section-label" data-group="haute">🟠 Priorité haute — impact direct sur les KPIs M3-M6</div>
+
+  <div class="task-card" data-id="3" data-owner="conjoint" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Confirmer les zones GEOlocal du panel tracker</div>
+      <div class="task-desc">Valider que les 10 prompts géographiques actifs depuis le 23/05/2026 correspondent aux agences commercialement actives. Ajuster le panel si certaines zones ne sont pas prioritaires.</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">J1 – J5</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="4" data-owner="barillet" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Implémenter Organization JSON-LD</div>
+      <div class="task-desc">Ajouter le schema Organization complet sur barillet-distribution.fr : nom, description, URL, sameAs (LinkedIn, Kompass…), contactPoint. Signal d'identité de marque pour les LLMs.</div>
+      <div class="task-meta">
+        <span class="badge badge-barillet">✓ Barillet</span>
+        <span class="badge badge-timing">S1 – S2</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="5" data-owner="barillet" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Compléter LocalBusiness schema sur les pages agences</div>
+      <div class="task-desc">Ajouter areaServed (zone géographique desservie) et aggregateRating (agrégation d'avis) dans le schema LocalBusiness de chaque page agence. Prérequis pour la visibilité LLM locale.</div>
+      <div class="task-meta">
+        <span class="badge badge-barillet">✓ Barillet</span>
+        <span class="badge badge-timing">S1 – S2</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="6" data-owner="barillet" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Installer Microsoft Clarity + vérifier domaine Bing Webmaster Tools</div>
+      <div class="task-desc">Activer le suivi Citations (Bing Copilot) dans Clarity Dashboard → AI Visibility → Citations. Vérifier le domaine via Bing Webmaster Tools ou GSC. Établit la baseline de mesure des citations IA.</div>
+      <div class="task-meta">
+        <span class="badge badge-barillet">✓ Barillet</span>
+        <span class="badge badge-timing">M1</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="7" data-owner="barillet" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Enrichir les pages /agence/[ville]</div>
+      <div class="task-desc">Ajouter un paragraphe éditorial sur chaque page agence : zone desservie, types de clients, spécialités, délais de livraison. Contenu nécessaire pour être cité sur les requêtes LLM géolocalisées.</div>
+      <div class="task-meta">
+        <span class="badge badge-barillet">✓ Barillet</span>
+        <span class="badge badge-timing">M1 – M3</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="8" data-owner="conjoint" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Enrichir les textes SEO des pages catégories</div>
+      <div class="task-desc">Deux interventions : (1) intro de 2-3 phrases sous le H1 avec définition + usage clé + chiffre concret. (2) bloc éditorial 200-400 mots en bas de page avec données chiffrées, cas d'usage pro, signal "Mis à jour 2026".</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">Juil – Oct 2026</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="9" data-owner="conjoint" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Produire 10 guides experts — calendrier éditorial</div>
+      <div class="task-desc">Production selon le planning juillet–octobre 2026 : contreplaqué/MDF/OSB, essences bois, CTB-H/CTB-X, épaisseurs panneaux, terrasse composite vs exotique, panneaux HPL, commande pro, plan de travail, contreplaqué marine, MDF hydrofuge. 1 contenu/semaine, pause août.</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">Juil – Oct 2026</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="10" data-owner="conjoint" data-priority="haute" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Revue mensuelle Brand Tracker</div>
+      <div class="task-desc">Analyse des résultats Axe 1 (taux de citation global) + Axe 2 (visibilité locale) chaque mois. Ajustement du plan de contenu et du panel de prompts selon les données réelles. Cible M6 : 8% de citation moyen.</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">M1 – M6</span>
+        <span class="badge badge-haute">Haute</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TÂCHES NORMALES -->
+  <div class="section-label" data-group="normale">⚪ Priorité normale — compléments</div>
+
+  <div class="task-card" data-id="11" data-owner="barillet" data-priority="normale" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">FAQPage JSON-LD sur les pages catégories</div>
+      <div class="task-desc">Baliser les H2 questions existants sur /panneau-contreplaque, /panneau-melamine, /panneau-mdf, /panneau-osb. Action de faible coût sur la structure existante. Impact LLM incertain mais bonne pratique de balisage.</div>
+      <div class="task-meta">
+        <span class="badge badge-barillet">✓ Barillet</span>
+        <span class="badge badge-timing">S1 – S2</span>
+        <span class="badge badge-normale">Normale</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="12" data-owner="conjoint" data-priority="normale" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Présence éditoriale sur les forums bois</div>
+      <div class="task-desc">Contribution authentique sur lairdubois.fr, lamortaise.com, copaindescopeaux.fr. Approche progressive : observation (M2), contribution experte (M3-M4), mention naturelle de Barillet (M5-M6). Ces forums sont activement indexés dans les corpus LLM.</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">M2 – M6</span>
+        <span class="badge badge-normale">Normale</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" data-id="13" data-owner="conjoint" data-priority="normale" onclick="toggleTask(this)">
+    <div class="task-check"><span class="task-check-icon">✓</span></div>
+    <div class="task-body">
+      <div class="task-title">Campagne netlinking ciblée — sources bois/BTP</div>
+      <div class="task-desc">5 à 8 liens sur des domaines thématiques identifiés par le LLM Brand Tracker (favrat-ossature-bois.fr, architecturebois.fr, batipole.com, batirama.com, lairdubois.fr…). Budget indicatif : 1 050€ à 3 300€ HT selon scénario.</div>
+      <div class="task-meta">
+        <span class="badge badge-conjoint">✓ Empirik + Barillet</span>
+        <span class="badge badge-timing">M2 – M6</span>
+        <span class="badge badge-normale">Normale</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Audit GEO — Barillet Distribution · Empirik · Mai 2026
+  </div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'barillet-geo-todo';
+
+  function loadState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch(e) { return {}; }
+  }
+
+  function saveState(state) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function toggleTask(card) {
+    const id = card.dataset.id;
+    const state = loadState();
+    state[id] = !state[id];
+    saveState(state);
+    applyState();
+    updateProgress();
+  }
+
+  function applyState() {
+    const state = loadState();
+    document.querySelectorAll('.task-card').forEach(card => {
+      const done = !!state[card.dataset.id];
+      card.classList.toggle('done', done);
+    });
+  }
+
+  function updateProgress() {
+    const cards = document.querySelectorAll('.task-card');
+    const total = cards.length;
+    const done = document.querySelectorAll('.task-card.done').length;
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    document.getElementById('count-done').textContent = done;
+    document.getElementById('count-total').textContent = total;
+    document.getElementById('pct-label').textContent = pct + '%';
+    const fill = document.getElementById('progress-fill');
+    fill.style.width = pct + '%';
+    fill.classList.toggle('done', pct === 100);
+  }
+
+  function resetAll() {
+    if (!confirm('Réinitialiser toutes les actions ?')) return;
+    saveState({});
+    applyState();
+    updateProgress();
+  }
+
+  let currentFilter = 'all';
+
+  function filterTasks(filter, btn) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilter();
+  }
+
+  function applyFilter() {
+    const state = loadState();
+    document.querySelectorAll('.task-card').forEach(card => {
+      const owner = card.dataset.owner;
+      const done = !!state[card.dataset.id];
+      let show = true;
+      if (currentFilter === 'barillet') show = owner === 'barillet';
+      else if (currentFilter === 'conjoint') show = owner === 'conjoint';
+      else if (currentFilter === 'todo') show = !done;
+      else if (currentFilter === 'done') show = done;
+      card.dataset.hidden = show ? 'false' : 'true';
+    });
+
+    // Masquer les section-labels si toutes les tâches du groupe sont cachées
+    document.querySelectorAll('.section-label').forEach(label => {
+      const group = label.dataset.group;
+      let sibling = label.nextElementSibling;
+      let hasVisible = false;
+      while (sibling && sibling.classList.contains('task-card')) {
+        if (sibling.dataset.hidden !== 'true') { hasVisible = true; break; }
+        sibling = sibling.nextElementSibling;
+      }
+      label.style.display = hasVisible ? '' : 'none';
+    });
+  }
+
+  // Init
+  applyState();
+  updateProgress();
+</script>
+
+</body>
+</html>
