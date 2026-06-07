@@ -1551,8 +1551,9 @@
           <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Les premières données de citation (collecte démarrée le 23/05/2026) seront analysées ensemble pour établir la baseline Axe 2.</li>
           <li><span class="action-who action-barillet">✓ Action Barillet</span>Ajouter <code>areaServed</code> dans le schema LocalBusiness de chaque agence — c'est le seul champ manquant confirmé par Rich Results Test (non-critical issues). Lister les villes et départements desservis.</li>
           <li><span class="action-who action-barillet">✓ Action Barillet</span>Exposer <code>aggregateRating</code> en JSON-LD — les avis clients sont déjà présents sur la page (Lyon : 4 avis 5/5), il suffit de les baliser dans le schema LocalBusiness.</li>
-          <li><span class="action-who action-barillet">✓ Action Barillet</span>Remplacer ou compléter la carte image des zones de livraison par un texte structuré lisible par les LLMs : liste des zones avec villes et départements couverts, fréquence de livraison. Le texte minimal existant ("Zone 1 - Tous les jours Lyon") est un bon départ à enrichir.</li>
-          <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Enrichir le contenu éditorial des pages agences — le "Mot du directeur" et le paragraphe de bienvenue sont de bons signaux GEO. Les compléter avec : types de clients professionnels accueillis (menuisiers, ébénistes, agenceurs, charpentiers), spécificités de l'agence, gammes disponibles en stock local.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Consolider et enrichir le texte des zones de livraison — le contenu existe mais est fragmenté (zones 1-7, puis interrompu par le carousel produits et les services, puis zones 8-9). Idéalement : regrouper toutes les zones dans un bloc continu et remplacer les noms marketing ("Monts du Lyonnais", "Monts d'Or") par les villes et départements réels couverts (ex. Zone 3 : Grenoble, Vienne, Bourgoin-Jallieu — Isère 38).</li>
+          <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Enrichir les descriptions de services avec les types de clients visés — les textes actuels (Découpe, Presse à stratifier, Placage de chant, Usinage) sont bien structurés mais ne mentionnent pas les menuisiers, ébénistes, agenceurs et charpentiers. Ajouter une phrase de contexte pro pour chaque service.</li>
+          <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Enrichir le contenu éditorial des pages agences — le "Mot du directeur" et le paragraphe de bienvenue sont de bons signaux GEO. Les compléter avec : types de clients professionnels accueillis, spécificités de l'agence, gammes disponibles en stock local.</li>
           <li><span class="action-who action-barillet">✓ Action Barillet</span>Auditer et optimiser les fiches Google Business Profile de chaque agence : photos, horaires, catégories, description.</li>
         </ol>
       </div>
@@ -1631,9 +1632,14 @@
               <td>Moyen — signal de confiance et de popularité locale. Faible coût : les données sont déjà là.</td>
             </tr>
             <tr>
-              <td>Carte des zones de livraison</td>
-              <td style="color:var(--warning);font-weight:600;">✗ Format image — illisible par les LLMs</td>
-              <td>Fort — les LLMs ne peuvent pas lire une image. Le texte des zones existe en dessous de la carte mais il est minimal ("Zone 1 - Tous les jours Lyon"). À enrichir avec le nom des villes et départements couverts.</td>
+              <td>Texte des zones de livraison</td>
+              <td style="color:var(--amber);font-weight:600;">⚠ Présent mais fragmenté et minimal</td>
+              <td>Fort — le texte existe et est lisible par les LLMs (zones 1 à 9 avec ville + fréquence). Deux problèmes : (1) le contenu est interrompu par le carousel produits et les services, rendant la lecture séquentielle incohérente ; (2) les descriptions sont trop vagues ("Zone 3 - Isère", "Monts du Lyonnais") sans lister les villes et départements précis couverts.</td>
+            </tr>
+            <tr>
+              <td>Texte des services disponibles</td>
+              <td style="color:var(--ok);font-weight:600;">✓ Présent et bien structuré</td>
+              <td>Bon — Presse à stratifier, Découpe de panneaux, Placage de chant, Centre d'usinage sont décrits avec une phrase explicative. À enrichir : ajouter les types de clients professionnels auxquels ces services s'adressent (menuisiers, ébénistes, agenceurs, charpentiers).</td>
             </tr>
             <tr>
               <td>Citations dans annuaires régionaux/sectoriels</td>
