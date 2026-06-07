@@ -226,7 +226,13 @@
   .finding .finding-body {
     font-size: 14px;
     color: var(--text);
-    line-height: 1.65;
+    line-height: 1.75;
+  }
+  .finding .finding-body p {
+    margin-bottom: 12px;
+  }
+  .finding .finding-body p:last-child {
+    margin-bottom: 0;
   }
   .finding .action {
     margin-top: 14px;
@@ -450,7 +456,8 @@
   .callout p {
     font-size: 14px;
     color: #d0eef8;
-    line-height: 1.65;
+    line-height: 1.75;
+    margin-bottom: 10px;
   }
 
   /* FOOTER */
@@ -476,7 +483,16 @@
     padding-top: 0;
     margin-top: 0;
   }
-  p.note { font-size: 13px; color: var(--text-light); margin-top: 8px; }
+  p.note { font-size: 13px; color: var(--text-light); margin-top: 8px; margin-bottom: 10px; }
+
+  /* Aération globale des paragraphes dans les blocs de contenu */
+  .section-body p,
+  .prio-content span,
+  .kpi-section p {
+    margin-bottom: 10px;
+    line-height: 1.75;
+  }
+  .section-body p:last-child { margin-bottom: 0; }
 
   /* Listes dans finding-body */
   .finding-body ol, .finding-body ul { padding-left: 20px; margin-top: 8px; }
