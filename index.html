@@ -633,7 +633,7 @@
         <div>
           <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#2d6a4f;margin-bottom:8px;">Axe 2 · Localisation des agences</div>
           <p style="font-size:14px;line-height:1.7;color:#1c1c1c;margin-bottom:8px;"><strong>Baseline en cours de construction.</strong> 10 prompts géographiques ajoutés au LLM Brand Tracker depuis le 23/05/2026. La collecte de données est active.</p>
-          <p style="font-size:13px;color:#54595F;line-height:1.6;">Les agences ont le socle technique (LocalBusiness schema valide, pages indexées). Ce qui manque : contenu éditorial, <code>areaServed</code>, GBP optimisé. Voir section 1.5 pour le protocole complet.</p>
+          <p style="font-size:13px;color:#54595F;line-height:1.6;">Les agences ont un bon socle technique : LocalBusiness et Organization schemas valides (confirmé Rich Results Test), pages indexées, contenu éditorial présent. Ce qui manque encore : <code>areaServed</code> absent du LocalBusiness schema, <code>aggregateRating</code> non exposé en JSON-LD (les avis sont sur la page), et la carte des zones de livraison est une image illisible par les LLMs. Voir section 1.5 pour le détail.</p>
         </div>
       </div>
     </div>
@@ -781,12 +781,12 @@
             <td>J1 – J5</td>
             <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
           </tr>
-          <tr>
+          <tr style="opacity:.55;">
             <td><strong>4</strong></td>
-            <td><strong>Organization JSON-LD</strong> — Ajouter le schema Organization complet sur barillet-distribution.fr (nom, description, sameAs réseaux, contactPoint).</td>
+            <td><strong>Organization JSON-LD</strong> — <span style="color:#2d7a4f;font-weight:700;">✅ Déjà en place</span> — Validé par Rich Results Test le 07/06/2026. À enrichir optionnellement : foundingDate (1920), numberOfEmployees, sameAs Wikipedia/Wikidata.</td>
             <td><span class="action-who action-barillet" style="margin:0;">✓ Barillet</span></td>
-            <td>S1 – S2</td>
-            <td><span style="color:#ED621B;font-weight:700;font-size:11px;">Haute</span></td>
+            <td><s>S1 – S2</s></td>
+            <td><span style="color:#2d7a4f;font-weight:700;font-size:11px;">✅ Fait</span></td>
           </tr>
           <tr>
             <td><strong>5</strong></td>
@@ -1549,8 +1549,10 @@
         <ol style="padding-left:18px;margin-top:8px;line-height:2.2;">
           <li><span class="action-who action-barillet">✓ Barillet</span>Confirmer que les 10 prompts GEOlocal ci-dessous correspondent aux zones géographiques prioritaires de votre réseau d'agences.</li>
           <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Les premières données de citation (collecte démarrée le 23/05/2026) seront analysées ensemble pour établir la baseline Axe 2.</li>
-          <li><span class="action-who action-barillet">✓ Action Barillet</span>Enrichir chaque page <code>/agence/[ville]</code> avec un paragraphe éditorial : zone desservie, types de clients, spécialités, délais de livraison.</li>
-          <li><span class="action-who action-barillet">✓ Action Barillet</span>Ajouter <code>areaServed</code> et <code>aggregateRating</code> dans le schema LocalBusiness de chaque page agence.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Ajouter <code>areaServed</code> dans le schema LocalBusiness de chaque agence — c'est le seul champ manquant confirmé par Rich Results Test (non-critical issues). Lister les villes et départements desservis.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Exposer <code>aggregateRating</code> en JSON-LD — les avis clients sont déjà présents sur la page (Lyon : 4 avis 5/5), il suffit de les baliser dans le schema LocalBusiness.</li>
+          <li><span class="action-who action-barillet">✓ Action Barillet</span>Remplacer ou compléter la carte image des zones de livraison par un texte structuré lisible par les LLMs : liste des zones avec villes et départements couverts, fréquence de livraison. Le texte minimal existant ("Zone 1 - Tous les jours Lyon") est un bon départ à enrichir.</li>
+          <li><span class="action-who action-conjoint">✓ Empirik + Barillet</span>Enrichir le contenu éditorial des pages agences — le "Mot du directeur" et le paragraphe de bienvenue sont de bons signaux GEO. Les compléter avec : types de clients professionnels accueillis (menuisiers, ébénistes, agenceurs, charpentiers), spécificités de l'agence, gammes disponibles en stock local.</li>
           <li><span class="action-who action-barillet">✓ Action Barillet</span>Auditer et optimiser les fiches Google Business Profile de chaque agence : photos, horaires, catégories, description.</li>
         </ol>
       </div>
@@ -1594,6 +1596,16 @@
           </thead>
           <tbody>
             <tr>
+              <td>Schema <strong>Organization</strong> sur barillet-distribution.fr</td>
+              <td style="color:var(--ok);font-weight:600;">✓ Présent et valide — confirmé Rich Results Test 07/06/2026</td>
+              <td>Fort — signal d'autorité de marque pour les LLMs</td>
+            </tr>
+            <tr>
+              <td>Schema <strong>Breadcrumbs</strong></td>
+              <td style="color:var(--ok);font-weight:600;">✓ Présent et valide — confirmé Rich Results Test 07/06/2026</td>
+              <td>Moyen — structure de navigation reconnue</td>
+            </tr>
+            <tr>
               <td>Schema LocalBusiness sur pages <code>/agence/</code></td>
               <td style="color:var(--ok);font-weight:600;">✓ Présent et valide (Microdata, confirmé Rich Results Test sur /agence/arques)</td>
               <td>Fort — structure reconnue par Googlebot et indexée</td>
@@ -1615,8 +1627,13 @@
             </tr>
             <tr>
               <td>Avis clients / <code>aggregateRating</code> dans LocalBusiness</td>
-              <td style="color:var(--warning);font-weight:600;">✗ Absent du schema</td>
-              <td>Moyen — signal de confiance et de popularité locale</td>
+              <td style="color:var(--amber);font-weight:600;">⚠ Avis présents sur la page (ex. Lyon : 4 avis 5/5) mais non exposés en JSON-LD</td>
+              <td>Moyen — signal de confiance et de popularité locale. Faible coût : les données sont déjà là.</td>
+            </tr>
+            <tr>
+              <td>Carte des zones de livraison</td>
+              <td style="color:var(--warning);font-weight:600;">✗ Format image — illisible par les LLMs</td>
+              <td>Fort — les LLMs ne peuvent pas lire une image. Le texte des zones existe en dessous de la carte mais il est minimal ("Zone 1 - Tous les jours Lyon"). À enrichir avec le nom des villes et départements couverts.</td>
             </tr>
             <tr>
               <td>Citations dans annuaires régionaux/sectoriels</td>
@@ -1751,8 +1768,22 @@
 <li>
         <div class="prio-num">3</div>
         <div class="prio-content">
-          <strong>Enrichir le schema Organization</strong>
-          <span>Ajouter foundingDate (1920), numberOfEmployees, areaServed (France), sameAs (Wikipedia, Wikidata si disponibles), description complète. Signal d'autorité de marque pour les LLMs.</span>
+          <strong>Ajouter <code>areaServed</code> dans le schema LocalBusiness de chaque agence</strong>
+          <span>C'est le seul champ manquant identifié par le Rich Results Test (non-critical issues). Lister les villes et départements couverts par chaque agence. Exemple pour Lyon : Rhône (69), Loire (42), Isère (38), Ain (01), Savoie (73), Haute-Savoie (74), Drôme (26), Ardèche (07).</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">4</div>
+        <div class="prio-content">
+          <strong>Exposer <code>aggregateRating</code> en JSON-LD sur les pages agences</strong>
+          <span>Les avis clients sont déjà présents sur chaque page agence (Lyon : 4 avis 5/5). Il suffit d'ajouter le balisage aggregateRating dans le schema LocalBusiness existant — pas de collecte de nouvelles données, juste un balisage du contenu déjà là. Signal de popularité locale pour les LLMs.</span>
+        </div>
+      </li>
+      <li>
+        <div class="prio-num">5</div>
+        <div class="prio-content">
+          <strong>Enrichir le schema Organization (optionnel)</strong>
+          <span><span style="color:#2d7a4f;font-weight:600;">Organization déjà valide</span> (confirmé Rich Results Test 07/06/2026). Enrichissement optionnel : ajouter foundingDate (1920), numberOfEmployees, sameAs (Wikipedia/Wikidata si disponibles). Faible priorité.</span>
         </div>
       </li>
     </ul>
