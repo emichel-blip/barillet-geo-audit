@@ -1600,10 +1600,120 @@
   <p class="note" style="margin-top:12px;">⚠ Note méthodologique (1) : le prompt "alternative à Point P" nomme explicitement un concurrent dans la question. Point P y est cité dans 99,7% des réponses par construction, pas en raison de sa présence organique dans le corpus LLM. Ce prompt introduit un biais à la hausse dans les chiffres concurrents et devrait être analysé séparément ou exclu du calcul de référence.</p>
   <p class="note" style="margin-top:8px;">⚠ Note méthodologique (2) — Évolution du périmètre de mesure : Gemini a été ajouté au LLM Brand Tracker en mars 2026. La forte progression apparente de Dispano à cette date n'est pas liée à une amélioration de son contenu — elle reflète sa présence structurellement plus élevée sur Gemini par rapport à ChatGPT. Les données antérieures à mars 2026 (ChatGPT uniquement) et postérieures (ChatGPT + Gemini) ne sont pas directement comparables. Pour un suivi de tendance fiable, distinguer systématiquement les résultats par plateforme.</p>
 
-    <h3 class="sub">1.5 Visibilité locale — Requêtes géographiques <span style="font-size:12px;font-weight:400;color:var(--amber);margin-left:8px;">Axe 2 — Baseline à construire</span></h3>
+    <h3 class="sub">1.5 Visibilité locale — Requêtes géographiques <span style="font-size:12px;font-weight:400;color:var(--ok);margin-left:8px;">Axe 2 — Premiers résultats disponibles</span></h3>
+
+    <!-- RÉSULTATS GEO LOCAL -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+      <div class="score-card" style="text-align:center;padding:20px 16px;">
+        <div class="score-val" style="color:#2d7a4f;font-size:32px;">38,3%</div>
+        <div class="score-label">Mentions Barillet<br>GEO local (moy. 10 villes)</div>
+        <div class="score-status" style="background:#e8f5fb;color:#003D5F;margin-top:8px;font-size:11px;">310 réponses ChatGPT + Gemini</div>
+      </div>
+      <div class="score-card" style="text-align:center;padding:20px 16px;">
+        <div class="score-val" style="color:#ED621B;font-size:32px;">38%</div>
+        <div class="score-label">Mentions Dispano<br>(1er concurrent local)</div>
+        <div class="score-status" style="background:#fff2ec;color:#b84d14;margin-top:8px;font-size:11px;">Parité sur les requêtes géo</div>
+      </div>
+      <div class="score-card" style="text-align:center;padding:20px 16px;">
+        <div class="score-val" style="color:#003D5F;font-size:32px;">vs 4,5%</div>
+        <div class="score-label">Sur les prompts métier<br>généraux (non géo)</div>
+        <div class="score-status" style="background:#eef5fa;color:#003D5F;margin-top:8px;font-size:11px;">Les requêtes locales favorisent Barillet</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-bottom:20px;">
+      <h3 style="color:#a8dff0;margin-bottom:8px;">Enseignement clé</h3>
+      <p>Barillet est structurellement mieux ancré dans les LLMs sur les requêtes géographiques (38,3%) que sur les requêtes métier génériques (4,5%). C'est cohérent : Barillet est un acteur régional de référence, pas un acteur national. Les requêtes "distributeur bois à [ville]" jouent en faveur de cette implantation locale.</p>
+      <p>Mais les disparités entre villes sont très importantes — de 6,5% à Amiens à 77,4% à Besançon. Avant toute action corrective sur les villes faibles, il faut vérifier si Barillet y livre réellement ou y a des agences actives.</p>
+    </div>
+
+    <h4 style="font-size:15px;font-weight:700;color:#003D5F;margin-bottom:14px;">Résultats par ville — 10 prompts GEOlocal (ChatGPT + Gemini)</h4>
+    <table class="data-table" style="margin-bottom:20px;">
+      <thead>
+        <tr>
+          <th>Ville / Zone</th>
+          <th style="width:160px;">Mentions Barillet</th>
+          <th style="width:180px;">Mentions concurrents</th>
+          <th>Lecture</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:#f0f8fd;">
+          <td><strong>Besançon</strong></td>
+          <td><strong style="color:#2d7a4f;font-size:15px;">77,4%</strong></td>
+          <td>77,4%</td>
+          <td><span class="pill pill-green">Position forte</span></td>
+        </tr>
+        <tr style="background:#f0f8fd;">
+          <td><strong>Limoges</strong></td>
+          <td><strong style="color:#2d7a4f;font-size:15px;">77,4%</strong></td>
+          <td>12,9%</td>
+          <td><span class="pill pill-green">Dominant — avance nette</span></td>
+        </tr>
+        <tr style="background:#f0f8fd;">
+          <td><strong>Angoulême</strong></td>
+          <td><strong style="color:#2d7a4f;font-size:15px;">77,4%</strong></td>
+          <td>25,8%</td>
+          <td><span class="pill pill-green">Dominant — avance nette</span></td>
+        </tr>
+        <tr style="background:#f0f8fd;">
+          <td><strong>Dijon</strong></td>
+          <td><strong style="color:#2d7a4f;font-size:15px;">71,0%</strong></td>
+          <td>67,7%</td>
+          <td><span class="pill pill-green">Position forte</span></td>
+        </tr>
+        <tr style="background:#f0f8fd;">
+          <td><strong>Poitiers</strong></td>
+          <td><strong style="color:#2d7a4f;font-size:15px;">64,5%</strong></td>
+          <td>35,5%</td>
+          <td><span class="pill pill-green">Position forte</span></td>
+        </tr>
+        <tr>
+          <td><strong>Lyon</strong></td>
+          <td><strong style="color:#2d7a4f;font-size:15px;">58,1%</strong></td>
+          <td style="color:var(--warning);">77,4%</td>
+          <td><span class="pill pill-amber">Bonne présence, concurrents devant — à surveiller</span></td>
+        </tr>
+        <tr>
+          <td><strong>Marseille</strong></td>
+          <td><strong style="color:var(--amber);font-size:15px;">45,2%</strong></td>
+          <td style="color:var(--warning);">80,6%</td>
+          <td><span class="pill pill-amber">Présence modérée</span></td>
+        </tr>
+        <tr style="background:#fff8f0;">
+          <td><strong>Île-de-France</strong></td>
+          <td><strong style="color:var(--warning);font-size:15px;">25,8%</strong></td>
+          <td style="color:var(--warning);">80,6%</td>
+          <td><span class="pill pill-red">Faible — vérifier le périmètre commercial</span></td>
+        </tr>
+        <tr style="background:#fff8f0;">
+          <td><strong>Lille</strong></td>
+          <td><strong style="color:var(--warning);font-size:15px;">12,9%</strong></td>
+          <td style="color:var(--warning);">93,5%</td>
+          <td><span class="pill pill-red">Très faible — vérifier le périmètre commercial</span></td>
+        </tr>
+        <tr style="background:#fff8f0;">
+          <td><strong>Amiens</strong></td>
+          <td><strong style="color:var(--warning);font-size:15px;">6,5%</strong></td>
+          <td style="color:var(--warning);">77,4%</td>
+          <td><span class="pill pill-red">Quasi absent — vérifier le périmètre commercial</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="finding warning" style="margin-bottom:20px;">
+      <div class="finding-title">⚠ Point de vigilance — Lyon à 58% alors que c'est le siège social</div>
+      <div class="finding-body">
+        <p>Lyon est la ville d'implantation principale de Barillet (agence à Meyzieu), mais les concurrents y sont cités à 77,4% contre 58,1% pour Barillet. C'est la seule ville forte où Barillet est devancé par ses concurrents.</p>
+        <p>Hypothèse probable : Lyon est un grand marché très concurrentiel où Dispano et Point P ont une présence digitale plus forte. Priorité : enrichir la page /agence/lyon avec les zones de livraison précises (9 zones, villes et départements), les services disponibles pour les pro, et l'aggregateRating JSON-LD.</p>
+      </div>
+    </div>
 
     <div class="finding warning">
-      <div class="finding-title">🔶 Panel GEOlocal actif depuis le 23/05/2026 — baseline en cours de construction</div>
+      <div class="finding-title">🔶 Villes faibles (Amiens 6,5%, Lille 12,9%, Île-de-France 25,8%) — vérifier le périmètre avant d'agir</div>
+      <div class="finding-body">
+        <p>Avant toute action SEO ou GEO sur ces trois zones, la question clé est : Barillet y livre-t-il et/ou y a-t-il des agences actives ? Si non, la faible visibilité LLM est normale et ces zones ne sont pas prioritaires. Si oui, c'est un problème de contenu et de signaux locaux à corriger.</p>
+      </div>
       <div class="action">
         <strong style="font-size:13px;text-transform:uppercase;letter-spacing:.5px;color:#5a4200;">Actions prioritaires</strong>
         <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;">
